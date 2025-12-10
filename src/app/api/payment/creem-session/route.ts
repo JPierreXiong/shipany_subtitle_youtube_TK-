@@ -10,6 +10,9 @@ import { respData, respErr } from '@/shared/lib/resp';
 
 type ServiceType = 'EXTRACT_SUBTITLE' | 'DOWNLOAD_VIDEO';
 
+// Avoid build-time static optimization; always evaluate at request time.
+export const dynamic = 'force-dynamic';
+
 function getUserIdFromRequest(req: NextRequest): string | null {
   // TODO: integrate Shipany auth; for now, accept header or fallback
   const h = req.headers.get('x-user-id');
