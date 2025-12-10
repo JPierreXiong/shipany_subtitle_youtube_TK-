@@ -105,3 +105,18 @@ export async function callRapidApiForExtraction(
   }
 }
 
+// Explicit export used by download API route
+export async function fetchTikTokDownloadByUrl(url: string, region = 'US') {
+  assertKey();
+  const endpoint = `https://${RAPIDAPI_HOST_TIKTOK}/photoSearch?keywords=${encodeURIComponent(
+    url
+  )}&region=${region}`;
+  const res = await axios.get(endpoint, {
+    headers: {
+      'x-rapidapi-host': RAPIDAPI_HOST_TIKTOK,
+      'x-rapidapi-key': RAPIDAPI_KEY,
+    },
+  });
+  return res.data;
+}
+
