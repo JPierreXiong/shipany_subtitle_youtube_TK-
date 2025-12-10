@@ -40,20 +40,24 @@ export async function POST(req: NextRequest) {
     return respErr('invalid serviceType');
   }
 
-  const taskId = getUuid();
-  // create pending task
-  await db().insert(task).values({
-    id: taskId,
-    userId,
-    url,
-    platform,
-    serviceType,
-    status: 'payment_pending',
-  });
-
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-
   try {
+    if (!creem || !creem.checkout?.sessions?.create) {
+      throw new Error('creem client not initialized');
+    }
+
+    const taskId = getUuid();
+    // create pending task
+    await db().insert(task).values({
+      id: taskId,
+      userId,
+      url,
+      platform,
+      serviceType,
+      status: 'payment_pending',
+    });
+
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
     const session = await creem.checkout.sessions.create({
       payment_method_types: ['card', 'wechat', 'alipay'],
       line_items: [
@@ -86,6 +90,7 @@ export async function POST(req: NextRequest) {
     return respErr(error?.message || 'creem session failed');
   }
 }
+
 
 
 
