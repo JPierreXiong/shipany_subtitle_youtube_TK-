@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
   try {
     const userId = getUserIdFromRequest(req);
     if (!userId) return respErr('unauthorized');
+    if (!creem) return respErr('creem client not configured');
 
     const body = await req.json().catch(() => ({}));
     const { url, platform, serviceType } = body || {};
