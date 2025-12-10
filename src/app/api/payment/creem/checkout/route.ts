@@ -27,6 +27,8 @@ export async function GET(req: NextRequest) {
     }
   }
 
+  // Types in @creem_io/nextjs only list apiKey/testMode/defaultSuccessUrl,
+  // but runtime accepts additional defaults. Cast to any to keep behavior.
   const handler = Checkout({
     apiKey,
     testMode: process.env.NODE_ENV !== 'production',
@@ -34,7 +36,7 @@ export async function GET(req: NextRequest) {
     defaultProductId: productId,
     defaultReferenceId: referenceId,
     defaultMetadata: metadata,
-  });
+  } as any);
 
   return handler(req);
 }
@@ -77,6 +79,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // See note above on casting to any to allow extra default fields.
   const handler = Checkout({
     apiKey,
     testMode: process.env.NODE_ENV !== 'production',
@@ -84,10 +87,11 @@ export async function POST(req: NextRequest) {
     defaultProductId: productId,
     defaultReferenceId: referenceId,
     defaultMetadata: metadata,
-  });
+  } as any);
 
   return handler(req);
 }
+
 
 
 
