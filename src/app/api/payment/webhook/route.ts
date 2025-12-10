@@ -8,11 +8,8 @@ import { task } from '@/config/db/schema';
 import { startTaskProcessing } from '@/lib/tasks/processor';
 import { respOk, respErr } from '@/shared/lib/resp';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// App Router no longer supports export const config; raw body access works by default.
+// This handler keeps using NextRequest + arrayBuffer for signature verification.
 
 export async function POST(req: NextRequest) {
   const signature =
