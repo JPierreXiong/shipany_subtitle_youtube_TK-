@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 
 import { db } from '@/core/db';
 import { task } from '@/config/db/schema';
-import { creem } from '@/lib/creem';
+import { getCreemClient } from '@/lib/creem';
 import { getUuid } from '@/shared/lib/hash';
 import { respData, respErr } from '@/shared/lib/resp';
 
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
   try {
     const userId = getUserIdFromRequest(req);
     if (!userId) return respErr('unauthorized');
-    if (!creem) return respErr('creem client not configured');
+    const creem = getCreemClient();
 
     const body = await req.json().catch(() => ({}));
     const { url, platform, serviceType } = body || {};

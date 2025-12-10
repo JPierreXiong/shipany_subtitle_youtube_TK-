@@ -19,18 +19,20 @@ if (!CREEM_WEBHOOK_SECRET) {
   console.warn('CREEM_WEBHOOK_SECRET is not set; webhook verification will fail.');
 }
 
-export const creem = CreemCtor
-  ? new CreemCtor({
-      secretKey: CREEM_SECRET_KEY,
-    })
-  : null;
+let creemInstance: any | null = null;
 
-export function ensureCreem() {
-  if (!creem) {
-    throw new Error('creem-sdk not initialized; check installation/import');
+export function getCreemClient() {
+  if (!CreemCtor) {
+    throw new Error('creem package not available; install or check import name');
   }
   if (!CREEM_SECRET_KEY) {
     throw new Error('CREEM_SECRET_KEY missing');
   }
+  if (!creemInstance) {
+    creemInstance = new CreemCtor({
+      secretKey: CREEM_SECRET_KEY,
+    });
+  }
+  return creemInstance;
 }
 
