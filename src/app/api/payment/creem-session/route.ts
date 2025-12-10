@@ -18,31 +18,27 @@ function getUserIdFromRequest(req: NextRequest): string | null {
 }
 
 export async function POST(req: NextRequest) {
-  const userId = getUserIdFromRequest(req);
-  if (!userId) return respErr('unauthorized');
-
-  const body = await req.json().catch(() => ({}));
-  const { url, platform, serviceType } = body || {};
-
-  if (!url) return respErr('url is required');
-  if (!platform) return respErr('platform is required');
-  if (!serviceType) return respErr('serviceType is required');
-
-  let amountInCents = 0;
-  let productName = 'Video service';
-  if (serviceType === 'EXTRACT_SUBTITLE') {
-    amountInCents = 150;
-    productName = 'Subtitle extraction & translation';
-  } else if (serviceType === 'DOWNLOAD_VIDEO') {
-    amountInCents = 250;
-    productName = 'Video download (no watermark)';
-  } else {
-    return respErr('invalid serviceType');
-  }
-
   try {
-    if (!creem || !creem.checkout?.sessions?.create) {
-      throw new Error('creem client not initialized');
+    const userId = getUserIdFromRequest(req);
+    if (!userId) return respErr('unauthorized');
+
+    const body = await req.json().catch(() => ({}));
+    const { url, platform, serviceType } = body || {};
+
+    if (!url) return respErr('url is required');
+    if (!platform) return respErr('platform is required');
+    if (!serviceType) return respErr('serviceType is required');
+
+    let amountInCents = 0;
+    let productName = 'Video service';
+    if (serviceType === 'EXTRACT_SUBTITLE') {
+      amountInCents = 150;
+      productName = 'Subtitle extraction & translation';
+    } else if (serviceType === 'DOWNLOAD_VIDEO') {
+      amountInCents = 250;
+      productName = 'Video download (no watermark)';
+    } else {
+      return respErr('invalid serviceType');
     }
 
     const taskId = getUuid();
@@ -87,6 +83,7 @@ export async function POST(req: NextRequest) {
 
     return respData({ url: session.url, taskId });
   } catch (error: any) {
+    console.error('creem-session error', error);
     return respErr(error?.message || 'creem session failed');
   }
 }
