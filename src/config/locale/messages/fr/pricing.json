@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "title": "Pricing",
+    "description": "Start with a plan"
+  },
+  "pricing": {
+    "id": "pricing",
+    "sr_only_title": "ShipAny Pricing",
+    "title": "Pricing",
+    "description": "Get all features of ShipAny, Ship your AI SaaS startups fast.",
+    "groups": [
+      {
+        "name": "one-time",
+        "title": "Pay as you go"
+      },
+      {
+        "name": "monthly",
+        "title": "Monthly",
+        "is_featured": true,
+        "label": "save 15%"
+      },
+      {
+        "name": "yearly",
+        "title": "Annually"
+      }
+    ],
+    "items": [
+      {
+        "title": "Starter",
+        "description": "Free to test: YouTube/TikTok up to 3 links.",
+        "features_title": "Includes",
+        "features": [
+          "3 YouTube or TikTok links",
+          "Up to 3 subtitle/video downloads",
+          "Translation limit 1,000 chars, 12 languages",
+          "Files kept up to 24 hours"
+        ],
+        "interval": "month",
+        "amount": 0,
+        "currency": "USD",
+        "price": "$0",
+        "unit": "/ month",
+        "is_featured": false,
+        "tip": "Free starter to validate your workflow",
+        "button": {
+          "title": "Start for free",
+          "url": "/#pricing",
+          "icon": "RiFlashlightFill"
+        },
+        "product_id": "starter-free",
+        "product_name": "Starter Free",
+        "group": "monthly",
+        "plan_name": "Starter"
+      },
+      {
+        "title": "Standard",
+        "description": "Professional: more links, downloads, storage.",
+        "label": "Popular",
+        "features_title": "Everything in Starter, plus",
+        "features": [
+          "800 YouTube + 500 TikTok links",
+          "Up to 1,500 downloads",
+          "Translation limit 20,000 chars, 12 languages",
+          "Cloud storage 1GB, retain files (expire after 3 days)"
+        ],
+        "interval": "month",
+        "amount": 1990,
+        "currency": "USD",
+        "price": "$19.9",
+        "unit": "/ month",
+        "is_featured": true,
+        "tip": "Best for steady usage",
+        "button": {
+          "title": "Upgrade",
+          "url": "/#pricing",
+          "icon": "RiFlashlightFill"
+        },
+        "product_id": "standard-pro",
+        "product_name": "Standard Professional",
+        "group": "monthly",
+        "plan_name": "Standard"
+      },
+      {
+        "title": "Premium",
+        "description": "Ulta: highest limits and storage.",
+        "features_title": "Everything in Standard, plus",
+        "features": [
+          "10,000 YouTube + 8,000 TikTok links",
+          "Up to 20,000 downloads",
+          "Translation limit 400,000 chars, 12 languages",
+          "Cloud storage 100GB, retain files (expire after 7 days)"
+        ],
+        "interval": "month",
+        "amount": 5990,
+        "currency": "USD",
+        "price": "$59.9",
+        "unit": "/ month",
+        "is_featured": false,
+        "tip": "For heavy production workloads",
+        "button": {
+          "title": "Go Premium",
+          "url": "/#pricing",
+          "icon": "RiFlashlightFill"
+        },
+        "product_id": "premium-ulta",
+        "product_name": "Premium Ulta",
+        "group": "monthly",
+        "plan_name": "Premium"
+      }
+    ]
+  },
+  "page": {
+    "current_plan": "Current Plan",
+    "processing": "Processing"
+  }
+}

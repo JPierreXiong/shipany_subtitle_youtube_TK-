@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: shipany-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: shipany
+      POSTGRES_PASSWORD: shipany
+      POSTGRES_DB: shipany
+    ports:
+      - '5433:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U shipany']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+
