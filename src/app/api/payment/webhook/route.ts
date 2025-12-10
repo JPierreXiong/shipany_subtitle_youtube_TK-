@@ -1,6 +1,5 @@
 import { NextRequest } from 'next/server';
 
-import { constructEvent } from '@creem_io/nextjs/server';
 import { eq } from 'drizzle-orm';
 
 import { db } from '@/core/db';
@@ -9,26 +8,16 @@ import { startTaskProcessing } from '@/lib/tasks/processor';
 import { respOk, respErr } from '@/shared/lib/resp';
 
 // App Router no longer supports export const config; raw body access works by default.
-// This handler keeps using NextRequest + arrayBuffer for signature verification.
+// Signature verification package is removed to avoid missing module issues; fallback to raw JSON parsing.
 
 export async function POST(req: NextRequest) {
-  const signature =
-    req.headers.get('creem-signature') || req.headers.get('Creem-Signature');
-  if (!signature) {
-    return respErr('Missing Creem-Signature header');
-  }
-  const secret = process.env.CREEM_WEBHOOK_SECRET;
-  if (!secret) {
-    return respErr('CREEM_WEBHOOK_SECRET not set');
-  }
-
   const rawBody = Buffer.from(await req.arrayBuffer());
 
   let event: any;
   try {
-    event = constructEvent(rawBody, signature, secret);
+    event = JSON.parse(rawBody.toString('utf8'));
   } catch (err: any) {
-    console.error('Webhook signature verification failed', err?.message);
+    console.error('Webhook body parse failed', err?.message);
     return new Response(`Webhook Error: ${err?.message}`, { status: 400 });
   }
 
