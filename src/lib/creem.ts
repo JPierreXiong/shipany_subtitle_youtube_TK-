@@ -4,9 +4,9 @@
 let CreemCtor: any;
 try {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  CreemCtor = require('creem-sdk');
+  CreemCtor = require('creem');
 } catch (e) {
-  console.warn('creem-sdk not found, please install it or adjust import name.');
+  console.warn('creem package not found, please install it or adjust import name.');
 }
 
 export const CREEM_WEBHOOK_SECRET = process.env.CREEM_WEBHOOK_SECRET || '';
