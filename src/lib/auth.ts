@@ -19,12 +19,11 @@ export const signUp = authClient.signUp;
 export const signOut = authClient.signOut;
 
 // Use useAuthData hook which provides session data
-// useAuthData gets authClient from context (provided by NeonAuthUIProvider)
-// It should be called without parameters as it reads from Context
+// Universal approach: pass authClient as parameter (works in all scenarios)
 export function useSession() {
-  // useAuthData reads authClient from NeonAuthUIProvider context
-  // Do not pass authClient as parameter - it will get it from context automatically
-  const authData = useAuthData();
+  // Pass authClient directly - this is the most reliable and universal approach
+  // Works whether or not NeonAuthUIProvider is used
+  const authData = useAuthData({ authClient });
   
   // Handle different return formats from useAuthData
   if (!authData) {
