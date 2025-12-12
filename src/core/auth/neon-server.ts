@@ -12,8 +12,8 @@ function getServerAuthClient() {
     return null;
   }
   
-  // createAuthClient requires the URL as parameter
-  return createAuthClient(neonAuthUrl);
+  // createAuthClient(url, config?) - requires URL as first parameter, config is optional
+  return createAuthClient(neonAuthUrl, {});
 }
 
 /**
@@ -37,8 +37,8 @@ export async function getNeonSession(request?: {
         ? Object.fromEntries(request.headers.entries())
         : request.headers;
       
-      // Create a client with URL
-      const tempClient = createAuthClient(neonAuthUrl);
+      // Create a client with URL and empty config
+      const tempClient = createAuthClient(neonAuthUrl, {});
       
       // Use fetchOptions to pass headers
       const session = await tempClient.getSession({
