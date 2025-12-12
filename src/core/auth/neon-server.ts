@@ -11,37 +11,44 @@ export const serverAuthClient = neonAuthUrl ? createAuthClient(neonAuthUrl) : nu
 
 /**
  * Get session from Neon Auth (server-side)
- * For use in middleware, we need to pass request headers directly
+ * For middleware, we need to create a client with request headers
  */
 export async function getNeonSession(request?: {
   headers: Headers | Record<string, string>;
 }) {
   try {
-    if (!serverAuthClient) {
-      console.error('Neon Auth client not initialized - check NEXT_PUBLIC_NEON_AUTH_URL');
+    const neonAuthUrl = envConfigs.neon_auth_url || process.env.NEXT_PUBLIC_NEON_AUTH_URL || '';
+    
+    if (!neonAuthUrl) {
+      console.error('Neon Auth URL not configured - check NEXT_PUBLIC_NEON_AUTH_URL');
       return null;
     }
 
     if (request) {
-      // For middleware - use request headers directly
+      // For middleware - create a client with request headers via fetchOptions
       const headersObj = request.headers instanceof Headers 
         ? Object.fromEntries(request.headers.entries())
         : request.headers;
       
-      const session = await serverAuthClient.getSession({
-        headers: headersObj,
+      // Create a temporary client for this request
+      const tempClient = createAuthClient(neonAuthUrl);
+      
+      // Use fetchOptions to pass headers
+      const session = await tempClient.getSession({
+        fetchOptions: {
+          headers: headersObj,
+        },
       });
       return session;
     } else {
-      // For API routes - use Next.js cookies
-      const cookieStore = await cookies();
-      const headersList = await headers();
-      const session = await serverAuthClient.getSession({
-        headers: {
-          cookie: cookieStore.toString(),
-          ...Object.fromEntries(headersList.entries()),
-        },
-      });
+      // For API routes - use default client which reads from cookies automatically
+      if (!serverAuthClient) {
+        console.error('Neon Auth client not initialized');
+        return null;
+      }
+      
+      // getSession() automatically reads from cookies in server environment
+      const session = await serverAuthClient.getSession();
       return session;
     }
   } catch (error) {
