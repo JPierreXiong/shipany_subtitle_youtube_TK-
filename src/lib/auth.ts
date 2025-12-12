@@ -11,9 +11,10 @@ import { envConfigs } from '@/config';
 // This allows us to handle CORS, cookies, and other Next.js-specific features
 const getClientAuthUrl = () => {
   if (typeof window !== 'undefined') {
-    // Client-side: use relative path to our Next.js API route
-    // This will automatically use the current domain (e.g., https://www.subtitletk.app/api/auth)
-    return '/api/auth';
+    // Client-side: use full URL to our Next.js API route
+    // Build full URL from current origin + /api/auth
+    const origin = window.location.origin;
+    return `${origin}/api/auth`;
   }
   // Server-side: use the actual Neon Auth service URL
   return process.env.NEXT_PUBLIC_NEON_AUTH_URL || envConfigs.neon_auth_url || '';

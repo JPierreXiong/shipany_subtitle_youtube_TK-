@@ -23,15 +23,25 @@ if (!isEdgeRuntime && !isNextRuntime && typeof process !== 'undefined') {
 export type ConfigMap = Record<string, string>;
 
 export const envConfigs = {
+  // App URL - should be HTTPS in production (e.g., https://www.subtitletk.app)
+  // Falls back to http://localhost:3000 for local development
   app_url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
   app_name: process.env.NEXT_PUBLIC_APP_NAME ?? 'Subtitle TK',
   theme: process.env.NEXT_PUBLIC_THEME ?? 'default',
   appearance: process.env.NEXT_PUBLIC_APPEARANCE ?? 'system',
   locale: process.env.NEXT_PUBLIC_DEFAULT_LOCALE ?? 'en',
+  // Database connection URL for Neon PostgreSQL
+  // Format: postgresql://user:password@host:port/database?sslmode=require
   database_url: process.env.DATABASE_URL ?? '',
   database_provider: process.env.DATABASE_PROVIDER ?? 'postgresql',
   db_singleton_enabled: process.env.DB_SINGLETON_ENABLED || 'false',
-  auth_url: process.env.AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || '',
+  // App base URL - used for building absolute URLs (e.g., callback URLs)
+  // Should be HTTPS in production: https://www.subtitletk.app
+  // Falls back to http://localhost:3000 for local development
+  auth_url: process.env.AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   auth_secret: process.env.AUTH_SECRET ?? '', // openssl rand -base64 32
+  // Neon Auth API URL - points to Neon Auth service endpoint
+  // This is used by server-side code to connect to Neon Auth service
+  // Client-side code uses /api/auth relative path which proxies to this URL
   neon_auth_url: process.env.NEXT_PUBLIC_NEON_AUTH_URL ?? '',
 };

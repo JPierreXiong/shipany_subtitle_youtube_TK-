@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSessionCookie } from 'better-auth/cookies';
+import { getNeonSession } from '@/core/auth/neon-server';
 import { routing } from '@/core/i18n/config';
 
 // 定义需要登录检查的路径前缀 (不带 locale)
 const PROTECTED_PATHS = ['/admin', '/settings', '/activity'];
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 快速检查：如果不是需要认证的路径，直接放行（性能优化）
@@ -31,9 +31,16 @@ export function proxy(request: NextRequest) {
 
   // 仅在受保护路径下，执行登录检查
   if (isProtectedPath) {
-    const session = getSessionCookie(request);
+    const session = await getNeonSession({ headers: request.headers });
+    
+    // Check if session has user
+    const hasUser = session && (
+      (session as any).user || 
+      (session as any).data?.user || 
+      (session as any).session?.user
+    );
 
-    if (!session) {
+    if (!hasUser) {
       // 重定向到 sign-in 页面
       const signInUrl = new URL(`/${locale}/sign-in`, request.url);
       // 设置回调 URL，以便登录后跳转回原来的页面

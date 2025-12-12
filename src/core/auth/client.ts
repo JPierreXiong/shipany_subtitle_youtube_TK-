@@ -1,43 +1,24 @@
-import { oneTapClient } from 'better-auth/client/plugins';
-import { createAuthClient } from 'better-auth/react';
+/**
+ * DEPRECATED: This file is no longer used.
+ * All authentication now uses Neon Auth via @/lib/auth
+ * 
+ * This file is kept for reference but should not be imported anywhere.
+ * If you see this file being imported, please update the import to use @/lib/auth instead.
+ */
 
-import { envConfigs } from '@/config';
+// Re-export from Neon Auth for backward compatibility (if needed)
+export { authClient, signIn, signUp, signOut, useSession } from '@/lib/auth';
 
-// auth client for client-side use
-export const authClient = createAuthClient({
-  baseURL: envConfigs.auth_url,
-  secret: envConfigs.auth_secret,
-});
-
-// export auth client methods
-export const { signIn, signUp, signOut, useSession } = authClient;
-
-// get auth client with configs
-export function getAuthClient(configs: Record<string, string>) {
-  const authClient = createAuthClient({
-    baseURL: envConfigs.auth_url,
-    secret: envConfigs.auth_secret,
-    plugins:
-      configs.google_client_id && configs.google_one_tap_enabled === 'true'
-        ? [
-            oneTapClient({
-              clientId: configs.google_client_id,
-              // Optional client configuration:
-              autoSelect: false,
-              cancelOnTapOutside: false,
-              context: 'signin',
-              additionalOptions: {
-                // Any extra options for the Google initialize method
-              },
-              // Configure prompt behavior and exponential backoff:
-              promptOptions: {
-                baseDelay: 1000, // Base delay in ms (default: 1000)
-                maxAttempts: 1, // Only attempt once to avoid multiple error logs (default: 5)
-              },
-            }),
-          ]
-        : [],
-  });
-
-  return authClient;
+// Note: One Tap functionality is not available in Neon Auth
+// If needed, implement using Neon Auth's OAuth providers
+export function getAuthClient(_configs: Record<string, string>) {
+  // Return Neon Auth client instead
+  // Use dynamic import to avoid circular dependencies
+  if (typeof window !== 'undefined') {
+    // Client-side: return Neon Auth client
+    const { authClient } = require('@/lib/auth');
+    return authClient;
+  }
+  // Server-side: return null or handle differently
+  return null;
 }

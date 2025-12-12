@@ -14,9 +14,8 @@ import { getAuth } from '@/core/auth';
  */
 export async function POST(req: NextRequest) {
   try {
-    const auth = await getAuth();
-    const session = await auth.api.getSession({ headers: req.headers });
-    if (!session?.user) {
+    const auth = await getAuth(req);
+    if (!auth?.user) {
       return respErr('Unauthorized', 401);
     }
 
@@ -55,7 +54,7 @@ export async function POST(req: NextRequest) {
       .set({
         status: 'used',
         usedAt: new Date(),
-        usedBy: session.user.id,
+        usedBy: auth.user.id,
         updatedAt: new Date(),
       })
       .where(eq(invitation.id, inv.id));

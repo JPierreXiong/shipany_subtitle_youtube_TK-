@@ -14,9 +14,8 @@ import { getUuid } from '@/shared/lib/hash';
  */
 export async function POST(req: NextRequest) {
   try {
-    const auth = await getAuth();
-    const session = await auth.api.getSession({ headers: req.headers });
-    if (!session?.user) {
+    const auth = await getAuth(req);
+    if (!auth?.user) {
       return respErr('Unauthorized', 401);
     }
 
@@ -31,7 +30,7 @@ export async function POST(req: NextRequest) {
     const [currentUser] = await db()
       .select()
       .from(user)
-      .where(eq(user.id, session.user.id))
+      .where(eq(user.id, auth.user.id))
       .limit(1);
 
     if (!currentUser) {

@@ -15,9 +15,8 @@ import { getAuth } from '@/core/auth';
  */
 export async function POST(req: NextRequest) {
   try {
-    const auth = await getAuth();
-    const session = await auth.api.getSession({ headers: req.headers });
-    if (!session?.user) {
+    const auth = await getAuth(req);
+    if (!auth?.user) {
       return respErr('Unauthorized', 401);
     }
 
@@ -36,7 +35,7 @@ export async function POST(req: NextRequest) {
     await db().insert(invitation).values({
       id,
       code,
-      inviterId: session.user.id,
+      inviterId: auth.user.id,
       inviteeEmail: inviteeEmail || null,
       status: 'pending',
       expiresAt,
