@@ -47,27 +47,6 @@
               "url": "/admin/posts"
             }
           ]
-        },
-        {
-          "title": "支付与积分",
-          "icon": "DollarSign",
-          "children": [
-            {
-              "title": "支付",
-              "url": "/admin/payments",
-              "icon": "DollarSign"
-            },
-            {
-              "title": "订阅",
-              "url": "/admin/subscriptions",
-              "icon": "CreditCard"
-            },
-            {
-              "title": "积分",
-              "url": "/admin/credits",
-              "icon": "Coins"
-            }
-          ]
         }
       ]
     },

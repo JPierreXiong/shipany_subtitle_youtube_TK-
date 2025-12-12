@@ -1,7 +1,9 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 
-import { getThemePage } from '@/core/theme';
-import { Landing } from '@/shared/types/blocks/landing';
+import SubtitleClient from './subtitle/subtitle-client';
+
+// Force dynamic rendering - this page uses client components with interactive features
+export const dynamic = 'force-dynamic';
 
 export default async function LandingPage({
   params,
@@ -11,26 +13,6 @@ export default async function LandingPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  // load page data
-  const t = await getTranslations('landing');
-
-  // build page params
-  const page: Landing = {
-    hero: t.raw('hero'),
-    logos: t.raw('logos'),
-    introduce: t.raw('introduce'),
-    benefits: t.raw('benefits'),
-    usage: t.raw('usage'),
-    features: t.raw('features'),
-    stats: t.raw('stats'),
-    subscribe: t.raw('subscribe'),
-    testimonials: t.raw('testimonials'),
-    faq: t.raw('faq'),
-    cta: t.raw('cta'),
-  };
-
-  // load page component
-  const Page = await getThemePage('landing');
-
-  return <Page locale={locale} page={page} />;
+  // Display subtitle extraction page directly at /en (or any locale root)
+  return <SubtitleClient />;
 }

@@ -47,27 +47,6 @@
               "url": "/admin/posts"
             }
           ]
-        },
-        {
-          "title": "Payments & Credits",
-          "icon": "DollarSign",
-          "children": [
-            {
-              "title": "Payments",
-              "url": "/admin/payments",
-              "icon": "DollarSign"
-            },
-            {
-              "title": "Subscriptions",
-              "url": "/admin/subscriptions",
-              "icon": "CreditCard"
-            },
-            {
-              "title": "Credits",
-              "url": "/admin/credits",
-              "icon": "Coins"
-            }
-          ]
         }
       ]
     },
