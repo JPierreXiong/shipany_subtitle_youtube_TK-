@@ -5,6 +5,9 @@ import { testimonial } from '@/config/db/schema';
 import { respData, respErr } from '@/shared/lib/resp';
 import { eq, desc } from 'drizzle-orm';
 
+// Force dynamic rendering - this route uses searchParams which is dynamic
+export const dynamic = 'force-dynamic';
+
 /**
  * Get latest testimonials (for homepage carousel)
  * GET /api/testimonials/list?limit=10

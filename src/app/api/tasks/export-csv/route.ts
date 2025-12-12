@@ -6,6 +6,9 @@ import { db } from '@/core/db';
 import { task } from '@/config/db/schema';
 import { respErr } from '@/shared/lib/resp';
 
+// Force dynamic rendering - this route uses searchParams which is dynamic
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   try {
     // Use req.nextUrl.searchParams instead of new URL(req.url) to avoid dynamic server usage

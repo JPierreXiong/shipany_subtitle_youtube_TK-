@@ -11,6 +11,9 @@ import {
   handleCheckoutSuccess,
 } from '@/shared/services/payment';
 
+// Force dynamic rendering - this route uses searchParams and pathname which are dynamic
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   let redirectUrl = '';
 
