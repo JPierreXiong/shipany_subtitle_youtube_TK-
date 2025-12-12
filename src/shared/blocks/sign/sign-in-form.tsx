@@ -66,13 +66,13 @@ export function SignInForm({
           callbackURL: callbackUrl,
         },
         {
-          onRequest: (ctx) => {
+          onRequest: (_ctx: any) => {
             setLoading(true);
           },
-          onResponse: (ctx) => {
+          onResponse: (_ctx: any) => {
             setLoading(false);
           },
-          onSuccess: (ctx) => {},
+          onSuccess: (_ctx: any) => {},
           onError: (e: any) => {
             toast.error(e?.error?.message || 'sign in failed');
             setLoading(false);

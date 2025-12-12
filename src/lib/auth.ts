@@ -6,10 +6,20 @@ import { useAuthData } from '@neondatabase/neon-js/auth/react';
 import { envConfigs } from '@/config';
 
 // Initialize Neon Auth client for Next.js
-// Note: In Next.js, we use process.env.NEXT_PUBLIC_* for client-side env vars
-const neonAuthUrl = typeof window !== 'undefined' 
-  ? (process.env.NEXT_PUBLIC_NEON_AUTH_URL || envConfigs.neon_auth_url)
-  : envConfigs.neon_auth_url || process.env.NEXT_PUBLIC_NEON_AUTH_URL || '';
+// Note: For client-side, we use our Next.js API route as the base URL
+// The API route will proxy requests to the actual Neon Auth service
+// This allows us to handle CORS, cookies, and other Next.js-specific features
+const getClientAuthUrl = () => {
+  if (typeof window !== 'undefined') {
+    // Client-side: use relative path to our Next.js API route
+    // This will automatically use the current domain (e.g., https://www.subtitletk.app/api/auth)
+    return '/api/auth';
+  }
+  // Server-side: use the actual Neon Auth service URL
+  return process.env.NEXT_PUBLIC_NEON_AUTH_URL || envConfigs.neon_auth_url || '';
+};
+
+const neonAuthUrl = getClientAuthUrl();
 
 export const authClient = createAuthClient(neonAuthUrl);
 
