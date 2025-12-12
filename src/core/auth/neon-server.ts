@@ -75,8 +75,8 @@ export async function getNeonUser() {
     return null;
   }
   
-  // Session might be in different formats
-  const user = (session as any).user || (session as any).data?.user || null;
+  // Session might be in different formats: { user: ... } or { data: { user: ... } } or { session: { user: ... } }
+  const user = (session as any).user || (session as any).data?.user || (session as any).session?.user || null;
   return user;
 }
 
@@ -85,6 +85,13 @@ export async function getNeonUser() {
  */
 export async function isAuthenticated(): Promise<boolean> {
   const session = await getNeonSession();
-  return !!session?.user;
+  if (!session) {
+    return false;
+  }
+  
+  // Handle different session response formats
+  // Session might be in format: { user: ... } or { data: { user: ... } } or { session: { user: ... } }
+  const user = (session as any).user || (session as any).data?.user || (session as any).session?.user;
+  return !!user;
 }
 
