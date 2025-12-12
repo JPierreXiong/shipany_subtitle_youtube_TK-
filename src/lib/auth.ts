@@ -19,11 +19,24 @@ export const signUp = authClient.signUp;
 export const signOut = authClient.signOut;
 
 // Use useAuthData hook which provides session data
+// useAuthData requires authClient from context (provided by NeonAuthUIProvider)
 export function useSession() {
-  const authData = useAuthData();
+  const authData = useAuthData(authClient);
+  
+  // Handle different return formats from useAuthData
+  if (!authData) {
+    return {
+      data: null,
+      isLoading: true,
+    };
+  }
+  
+  // authData may have session directly or in data.session
+  const session = authData.session || authData.data?.session;
+  
   return {
-    data: authData?.session ? { session: authData.session } : null,
-    isLoading: authData?.isLoading ?? false,
+    data: session ? { session } : null,
+    isLoading: authData.isLoading ?? false,
   };
 }
 
