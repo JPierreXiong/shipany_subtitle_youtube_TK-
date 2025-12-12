@@ -312,3 +312,76 @@ export async function getRemainingCredits(userId: string): Promise<number> {
 
   return parseInt(result?.total || '0');
 }
+
+// get credit usage statistics
+export async function getCreditUsageStats(userId: string): Promise<{
+  totalGranted: number;
+  totalConsumed: number;
+  remaining: number;
+  usagePercentage: number;
+}> {
+  const currentTime = new Date();
+
+  // Get total granted credits
+  const [grantedResult] = await db()
+    .select({
+      total: sum(credit.credits),
+    })
+    .from(credit)
+    .where(
+      and(
+        eq(credit.userId, userId),
+        eq(credit.transactionType, CreditTransactionType.GRANT),
+        eq(credit.status, CreditStatus.ACTIVE)
+      )
+    );
+
+  // Get total consumed credits
+  const [consumedResult] = await db()
+    .select({
+      total: sum(credit.credits),
+    })
+    .from(credit)
+    .where(
+      and(
+        eq(credit.userId, userId),
+        eq(credit.transactionType, CreditTransactionType.CONSUME),
+        eq(credit.status, CreditStatus.ACTIVE)
+      )
+    );
+
+  // Get remaining credits
+  const [remainingResult] = await db()
+    .select({
+      total: sum(credit.remainingCredits),
+    })
+    .from(credit)
+    .where(
+      and(
+        eq(credit.userId, userId),
+        eq(credit.transactionType, CreditTransactionType.GRANT),
+        eq(credit.status, CreditStatus.ACTIVE),
+        gt(credit.remainingCredits, 0),
+        or(
+          isNull(credit.expiresAt), // Never expires
+          gt(credit.expiresAt, currentTime) // Not yet expired
+        )
+      )
+    );
+
+  const totalGranted = parseInt(grantedResult?.total || '0');
+  const totalConsumed = Math.abs(parseInt(consumedResult?.total || '0'));
+  const remaining = parseInt(remainingResult?.total || '0');
+
+  // Calculate usage percentage
+  const usagePercentage = totalGranted > 0 
+    ? Math.round((totalConsumed / totalGranted) * 100) 
+    : 0;
+
+  return {
+    totalGranted,
+    totalConsumed,
+    remaining,
+    usagePercentage,
+  };
+}
