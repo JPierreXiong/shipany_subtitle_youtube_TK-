@@ -19,11 +19,28 @@ export const signUp = authClient.signUp;
 export const signOut = authClient.signOut;
 
 // Use useAuthData hook which provides session data
-// Universal approach: pass authClient as parameter (works in all scenarios)
+// useAuthData expects { queryFn, cacheKey, staleTime } parameters
+// We use queryFn to fetch session data from authClient
 export function useSession() {
-  // Pass authClient directly - this is the most reliable and universal approach
-  // Works whether or not NeonAuthUIProvider is used
-  const authData = useAuthData({ authClient });
+  // Use queryFn approach: this is what TypeScript expects
+  const authData = useAuthData({
+    queryFn: async () => {
+      try {
+        // Get session from authClient
+        const session = await authClient.getSession();
+        return { 
+          data: session, 
+          error: null 
+        };
+      } catch (err: any) {
+        return { 
+          data: null, 
+          error: err 
+        };
+      }
+    },
+    cacheKey: 'neon-session-data',
+  });
   
   // Handle different return formats from useAuthData
   if (!authData) {
@@ -33,8 +50,9 @@ export function useSession() {
     };
   }
   
-  // authData may have session directly or in data.session
-  const session = authData.session || authData.data?.session;
+  // authData structure: { data: { data: session }, error, isLoading }
+  // Extract session from nested data structure
+  const session = authData.data?.data || authData.data || authData.session;
   
   return {
     data: session ? { session } : null,
