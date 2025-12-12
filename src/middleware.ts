@@ -29,7 +29,7 @@ export default function middleware(request: NextRequest) {
   const locale = localeFromPath;
   const pathWithoutLocale = pathname.substring(locale.length + 1) || '/';
 
-  const isProtectedPath = PROTECTED_PATHS.some(prefix => 
+  const isProtectedPath = PROTECTED_PATHS.some(prefix =>
     pathWithoutLocale.startsWith(prefix) || pathWithoutLocale === prefix.slice(1)
   );
 
