@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { NextRequest } from 'next/server';
 
 import { envConfigs } from '@/config';
 import { routing } from '@/core/i18n/config';
@@ -10,13 +11,14 @@ import {
   handleCheckoutSuccess,
 } from '@/shared/services/payment';
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   let redirectUrl = '';
 
   try {
     // get callback params
-    const { searchParams, pathname } = new URL(req.url);
-    const orderNo = searchParams.get('order_no');
+    // Use req.nextUrl.searchParams instead of new URL(req.url) to avoid dynamic server usage
+    const orderNo = req.nextUrl.searchParams.get('order_no');
+    const pathname = req.nextUrl.pathname;
 
     if (!orderNo) {
       throw new Error('invalid callback params');
@@ -99,7 +101,8 @@ export async function GET(req: Request) {
   } catch (e: any) {
     console.error('checkout callback failed:', e);
     // On error, redirect to pricing page with locale
-    const { pathname } = new URL(req.url);
+    // Use req.nextUrl.pathname instead of new URL(req.url) to avoid dynamic server usage
+    const pathname = req.nextUrl.pathname;
     const pathParts = pathname.split('/').filter(Boolean);
     let locale = envConfigs.locale || 'en';
     if (pathParts.length > 0 && routing.locales.includes(pathParts[0] as any)) {

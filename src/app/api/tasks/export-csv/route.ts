@@ -8,10 +8,10 @@ import { respErr } from '@/shared/lib/resp';
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('userId');
-    const startDate = searchParams.get('startDate');
-    const endDate = searchParams.get('endDate');
+    // Use req.nextUrl.searchParams instead of new URL(req.url) to avoid dynamic server usage
+    const userId = req.nextUrl.searchParams.get('userId');
+    const startDate = req.nextUrl.searchParams.get('startDate');
+    const endDate = req.nextUrl.searchParams.get('endDate');
 
     // Build query
     let query = db().select().from(task);

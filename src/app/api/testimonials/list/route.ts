@@ -11,8 +11,8 @@ import { eq, desc } from 'drizzle-orm';
  */
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const limit = parseInt(searchParams.get('limit') || '10', 10);
+    // Use req.nextUrl.searchParams instead of new URL(req.url) to avoid dynamic server usage
+    const limit = parseInt(req.nextUrl.searchParams.get('limit') || '10', 10);
 
     try {
       const testimonials = await db()
