@@ -1,0 +1,16 @@
+﻿{
+  "stats": {
+    "total": "Extrações totais",
+    "total_description": "Número total de extrações de legendas",
+    "completed": "Concluídas",
+    "completed_description": "Extrações concluídas com sucesso",
+    "failed": "Falhadas",
+    "failed_description": "Extrações falhadas",
+    "in_progress": "Em progresso",
+    "in_progress_description": "Extrações pendentes ou em processamento"
+  }
+}
+
+
+
+

@@ -1,27 +1,27 @@
-{
+﻿{
   "metadata": {
-    "title": "Pricing",
-    "description": "Start with a plan"
+    "title": "Tarifs",
+    "description": "Commencez avec un plan"
   },
   "pricing": {
     "id": "pricing",
-    "sr_only_title": "ShipAny Pricing",
-    "title": "Pricing",
-    "description": "Get all features of ShipAny, Ship your AI SaaS startups fast.",
+    "sr_only_title": "Tarifs Subtitle TK",
+    "title": "Tarifs",
+    "description": "Obtenez toutes les fonctionnalités de Subtitle TK, lancez vos startups SaaS IA rapidement.",
     "groups": [
       {
         "name": "one-time",
-        "title": "Pay as you go"
+        "title": "Paiement à l'usage"
       },
       {
         "name": "monthly",
-        "title": "Monthly",
+        "title": "Mensuel",
         "is_featured": true,
-        "label": "save 15%"
+        "label": "économisez 15%"
       },
       {
         "name": "yearly",
-        "title": "Annually"
+        "title": "Annuel"
       }
     ],
     "items": [
@@ -41,9 +41,9 @@
         "price": "$0",
         "unit": "/ month",
         "is_featured": false,
-        "tip": "Free starter to validate your workflow",
+        "tip": "Starter gratuit pour valider votre flux de travail",
         "button": {
-          "title": "Start for free",
+          "title": "Commencer gratuitement",
           "url": "/#pricing",
           "icon": "RiFlashlightFill"
         },
@@ -54,9 +54,9 @@
       },
       {
         "title": "Standard",
-        "description": "Professional: more links, downloads, storage.",
-        "label": "Popular",
-        "features_title": "Everything in Starter, plus",
+        "description": "Professionnel : plus de liens, téléchargements, stockage.",
+        "label": "Populaire",
+        "features_title": "Tout dans Starter, plus",
         "features": [
           "800 YouTube + 500 TikTok links",
           "Up to 1,500 downloads",
@@ -69,9 +69,9 @@
         "price": "$19.9",
         "unit": "/ month",
         "is_featured": true,
-        "tip": "Best for steady usage",
+        "tip": "Idéal pour une utilisation régulière",
         "button": {
-          "title": "Upgrade",
+          "title": "Mettre à niveau",
           "url": "/#pricing",
           "icon": "RiFlashlightFill"
         },
@@ -82,8 +82,8 @@
       },
       {
         "title": "Premium",
-        "description": "Ulta: highest limits and storage.",
-        "features_title": "Everything in Standard, plus",
+        "description": "Ultra : limites et stockage les plus élevés.",
+        "features_title": "Tout dans Standard, plus",
         "features": [
           "10,000 YouTube + 8,000 TikTok links",
           "Up to 20,000 downloads",
@@ -96,9 +96,9 @@
         "price": "$59.9",
         "unit": "/ month",
         "is_featured": false,
-        "tip": "For heavy production workloads",
+        "tip": "Pour des charges de travail de production intensives",
         "button": {
-          "title": "Go Premium",
+          "title": "Passer à Premium",
           "url": "/#pricing",
           "icon": "RiFlashlightFill"
         },
@@ -110,7 +110,7 @@
     ]
   },
   "page": {
-    "current_plan": "Current Plan",
-    "processing": "Processing"
+    "current_plan": "Plan actuel",
+    "processing": "Traitement en cours"
   }
 }

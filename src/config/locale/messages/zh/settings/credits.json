@@ -1,4 +1,4 @@
-{
+﻿{
   "fields": {
     "transaction_no": "交易单号",
     "description": "描述",
@@ -19,6 +19,10 @@
   },
   "view": {
     "title": "积分余额",
+    "remaining": "剩余积分",
+    "usage": "使用率",
+    "used": "已使用",
+    "total": "总计",
     "buttons": {
       "purchase": "购买积分"
     }

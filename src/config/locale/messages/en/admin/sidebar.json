@@ -1,11 +1,7 @@
-{
+﻿{
   "header": {
     "brand": {
-      "title": "ShipAny Two",
-      "logo": {
-        "src": "/logo.png",
-        "alt": "ShipAny Two"
-      },
+      "title": "Subtitle TK",
       "url": "/admin"
     },
     "show_trigger": false

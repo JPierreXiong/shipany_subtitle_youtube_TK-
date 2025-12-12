@@ -1,8 +1,8 @@
-{
+﻿{
   "metadata": {
-    "title": "ShipAny Template Two",
-    "description": "ShipAny is a NextJS boilerplate for building AI SaaS startups. Ship Fast with a variety of templates and components.",
-    "keywords": "shipany, shipany-boilerplate, shipany-template-two-demo"
+    "title": "Subtitle TK",
+    "description": "Subtitle TK - Extract subtitles from YouTube and TikTok, translate to 12 languages, and download videos.",
+    "keywords": "subtitle-tk, subtitle-extraction, youtube-subtitles, tiktok-subtitles"
   },
   "sign": {
     "sign_in_title": "Sign In",

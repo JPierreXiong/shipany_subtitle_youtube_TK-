@@ -1,0 +1,16 @@
+﻿{
+  "stats": {
+    "total": "Extractions totales",
+    "total_description": "Nombre total d'extractions de sous-titres",
+    "completed": "Réussies",
+    "completed_description": "Extractions réussies",
+    "failed": "Échouées",
+    "failed_description": "Extractions échouées",
+    "in_progress": "En cours",
+    "in_progress_description": "Extractions en attente ou en traitement"
+  }
+}
+
+
+
+

@@ -1,0 +1,17 @@
+{
+  "title": "Commentaires",
+  "description": "Nous aimerions avoir de vos nouvelles ! Partagez vos pensées, questions ou suggestions.",
+  "email_label": "Votre Email",
+  "email_placeholder": "votre.email@exemple.com",
+  "message_label": "Votre Message",
+  "message_placeholder": "Dites-nous ce que vous pensez...",
+  "message_hint": "Veuillez fournir au moins 10 caractères",
+  "submit_button": "Envoyer les Commentaires",
+  "submitting": "Envoi en cours...",
+  "submit_success": "Merci ! Nous avons reçu vos commentaires et envoyé un email de confirmation.",
+  "submit_error": "Échec de l'envoi des commentaires. Veuillez réessayer.",
+  "invalid_email": "Veuillez entrer une adresse email valide",
+  "message_too_short": "Le message doit contenir au moins 10 caractères"
+}
+
+

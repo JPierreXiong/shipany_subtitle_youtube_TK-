@@ -1,4 +1,4 @@
-{
+﻿{
   "fields": {
     "subscription_no": "Subscription No",
     "interval": "Interval",
@@ -13,6 +13,9 @@
   },
   "view": {
     "title": "Current Plan",
+    "payment_date": "Payment Date",
+    "next_payment_date": "Next Payment Date",
+    "registration_date": "Registration Date",
     "tip": "Your subscription will auto renew on {date}",
     "end_tip": "Your subscription will be auto canceled on {date}",
     "no_subscription": "No plan",

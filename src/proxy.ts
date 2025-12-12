@@ -1,59 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionCookie } from 'better-auth/cookies';
-import createIntlMiddleware from 'next-intl/middleware';
-
 import { routing } from '@/core/i18n/config';
 
-const intlMiddleware = createIntlMiddleware(routing);
+// 定义需要登录检查的路径前缀 (不带 locale)
+const PROTECTED_PATHS = ['/admin', '/settings', '/activity'];
 
-export async function proxy(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Handle internationalization first
-  const intlResponse = intlMiddleware(request);
+  // 快速检查：如果不是需要认证的路径，直接放行（性能优化）
+  // 这样可以避免对普通页面（/en, /fr, /es, /pt）进行不必要的计算
+  const needsAuth = PROTECTED_PATHS.some(prefix => pathname.includes(prefix));
 
-  // Extract locale from pathname
-  const locale = pathname.split('/')[1];
-  const isValidLocale = routing.locales.includes(locale as any);
-  const pathWithoutLocale = isValidLocale
-    ? pathname.slice(locale.length + 1)
-    : pathname;
-
-  // Only check authentication for admin routes
-  if (
-    pathWithoutLocale.startsWith('/admin') ||
-    pathWithoutLocale.startsWith('/settings') ||
-    pathWithoutLocale.startsWith('/activity')
-  ) {
-    // Check if session cookie exists
-    const sessionCookie = getSessionCookie(request);
-
-    // If no session token found, redirect to sign-in
-    if (!sessionCookie) {
-      const signInUrl = new URL(
-        isValidLocale ? `/${locale}/sign-in` : '/sign-in',
-        request.url
-      );
-      // Add the current path (including search params) as callback - use relative path for multi-language support
-      const callbackPath = pathWithoutLocale + request.nextUrl.search;
-      signInUrl.searchParams.set('callbackUrl', callbackPath);
-      return NextResponse.redirect(signInUrl);
-    }
-
-    // For admin routes, we need to check RBAC permissions
-    // Note: Full permission check happens in the page/API route level
-    // This is a lightweight session check to prevent unauthorized access
-    // The detailed permission check (admin.access and specific permissions)
-    // will be done in the layout or individual pages using requirePermission()
+  if (!needsAuth) {
+    // 普通页面直接放行，不进行任何计算
+    return NextResponse.next();
   }
 
-  intlResponse.headers.set('x-pathname', request.nextUrl.pathname);
-  intlResponse.headers.set('x-url', request.url);
+  // 只有需要认证的路径才进行 locale 提取和 session 检查
+  const parts = pathname.split('/').filter(Boolean);
+  const locale = routing.locales.includes(parts[0]) ? parts[0] : routing.defaultLocale;
+  const pathWithoutLocale = pathname.startsWith(`/${locale}`)
+    ? pathname.slice(locale.length + 1) || '/'
+    : pathname;
 
-  // For all other routes (including /, /sign-in, /sign-up, /sign-out), just return the intl response
-  return intlResponse;
+  // 检查是否为受保护的路径
+  const isProtectedPath = PROTECTED_PATHS.some(prefix => 
+    pathWithoutLocale.startsWith(prefix) || pathWithoutLocale === prefix.slice(1)
+  );
+
+  // 仅在受保护路径下，执行登录检查
+  if (isProtectedPath) {
+    const session = getSessionCookie(request);
+
+    if (!session) {
+      // 重定向到 sign-in 页面
+      const signInUrl = new URL(`/${locale}/sign-in`, request.url);
+      // 设置回调 URL，以便登录后跳转回原来的页面
+      signInUrl.searchParams.set('callbackUrl', pathWithoutLocale + request.nextUrl.search);
+      return NextResponse.redirect(signInUrl);
+    }
+  }
+
+  return NextResponse.next();
 }
 
+// middleware matcher
 export const config = {
-  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
+  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)'
 };

@@ -1,8 +1,19 @@
-{
+﻿{
   "fields": {
     "email": "邮箱",
     "name": "名称",
     "avatar": "头像"
+  },
+  "info": {
+    "title": "账户信息",
+    "customer_id": "客户ID",
+    "email": "邮箱",
+    "member_since": "注册时间",
+    "subscription_expires": "订阅到期时间",
+    "current_plan": "当前套餐",
+    "referred_by": "推荐人",
+    "not_assigned": "未分配",
+    "no_plan": "无有效套餐"
   },
   "edit": {
     "title": "个人资料",
@@ -14,5 +25,12 @@
     "buttons": {
       "submit": "保存"
     }
+  },
+  "stats": {
+    "title": "使用统计",
+    "total_tasks": "总任务数",
+    "completed_tasks": "成功任务数",
+    "failed_tasks": "失败任务数",
+    "download_count": "下载次数"
   }
 }

@@ -1,19 +1,11 @@
-import { getTranslations } from 'next-intl/server';
+import { redirect } from '@/core/i18n/navigation';
 
-import { Hero } from '@/themes/default/blocks/hero';
-
-export default async function AiChatbotPage() {
-  const t = await getTranslations('landing');
-  const tt = await getTranslations('demo.ai-chatbot');
-
-  return (
-    <>
-      <Hero
-        hero={{
-          title: tt.raw('title'),
-          description: tt.raw('description'),
-        }}
-      />
-    </>
-  );
+export default async function AiChatbotPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  // Redirect to /chat which has the ChatGenerator component
+  redirect({ href: '/chat', locale });
 }

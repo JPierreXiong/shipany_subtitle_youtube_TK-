@@ -1,18 +1,30 @@
-{
+﻿{
   "metadata": {
     "title": "Blog",
-    "description": "Read about our latest product features, solutions, and updates."
+    "description": "Leia sobre nossos últimos recursos de produtos, soluções e atualizações."
   },
   "blog": {
     "id": "blog",
-    "sr_only_title": "ShipAny Blog",
+    "sr_only_title": "Blog Subtitle TK",
     "title": "Blog",
-    "description": "Read about our latest product features, solutions, and updates."
+    "description": "Leia sobre nossos últimos recursos de produtos, soluções e atualizações."
   },
   "page": {
-    "all": "All",
-    "no_content": "No Content",
+    "all": "Tudo",
+    "no_content": "Sem conteúdo",
     "crumb": "Blog",
-    "toc": "Table of Contents"
+    "toc": "Índice"
+  },
+  "testimonials": {
+    "title": "Experiências dos usuários",
+    "no_testimonials": "Ainda não há depoimentos. Seja o primeiro a compartilhar sua experiência!",
+    "share_title": "Compartilhe sua experiência",
+    "share_description": "Compartilhe como você usa nossa ferramenta de legendas e ganhe 3 dias grátis!",
+    "share_button": "Compartilhar",
+    "share_placeholder": "Conte-nos sobre sua experiência usando nossa ferramenta de extração de legendas...",
+    "share_success": "Obrigado por compartilhar! Você recebeu 3 dias de bônus.",
+    "share_error": "Falha ao enviar depoimento",
+    "sign_in_required": "Por favor, faça login para compartilhar sua experiência",
+    "submitting": "Enviando..."
   }
 }

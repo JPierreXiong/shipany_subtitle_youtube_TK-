@@ -1,0 +1,43 @@
+﻿{
+  "stats": {
+    "total": "总提取数",
+    "total_description": "字幕提取总数",
+    "completed": "成功",
+    "completed_description": "成功完成的提取",
+    "failed": "失败",
+    "failed_description": "失败的提取",
+    "in_progress": "进行中",
+    "in_progress_description": "待处理或正在处理的提取",
+    "downloadable_files": "可下载文件",
+    "downloadable_files_description": "可供下载的文件数量",
+    "storage_used": "存储使用",
+    "storage_used_description": "已使用的存储空间",
+    "usage_rate": "使用率",
+    "usage_rate_description": "总体任务完成率"
+  },
+  "feedbacks": {
+    "title": "字幕提取历史",
+    "empty_message": "还没有提取历史",
+    "tabs": {
+      "all": "全部",
+      "completed": "已完成",
+      "failed": "失败",
+      "pending": "待处理"
+    },
+    "fields": {
+      "platform": "平台",
+      "status": "状态",
+      "service_type": "服务类型",
+      "video_title": "视频标题",
+      "video_author": "视频作者",
+      "stats": "统计数据",
+      "created_at": "创建时间",
+      "action": "操作"
+    },
+    "actions": {
+      "download_srt": "下载SRT",
+      "download_video": "下载视频"
+    }
+  }
+}
+

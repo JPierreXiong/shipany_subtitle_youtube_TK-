@@ -12,7 +12,7 @@ export const locales = ['en', 'fr', 'es', 'pt', 'zh'];
 
 export const defaultLocale = envConfigs.locale;
 
-export const localePrefix = 'as-needed';
+export const localePrefix = 'never';
 
 export const localeDetection = false;
 
@@ -21,9 +21,11 @@ export const localeMessagesRootPath = '@/config/locale/messages';
 export const localeMessagesPaths = [
   'common',
   'landing',
+  'subtitle',
   'showcases',
   'blog',
   'pricing',
+  'feedback',
   'settings/sidebar',
   'settings/profile',
   'settings/security',
@@ -47,6 +49,7 @@ export const localeMessagesPaths = [
   'ai/music',
   'ai/chat',
   'ai/image',
+  'activity',
   'activity/sidebar',
   'activity/ai-tasks',
   'activity/chats',

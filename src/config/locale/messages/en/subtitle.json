@@ -1,0 +1,28 @@
+﻿{
+  "title": "AI powered subtitles tools for you",
+  "subtitle": "Subtitles extraction from Youtube and TikTok and video download from TikTok support 12 languages",
+  "inputLabel": "Enter YouTube or TikTok Link",
+  "inputPlaceholder": "https://www.youtube.com/watch?v=... or https://www.tiktok.com/@...",
+  "nativeLanguageLabel": "Native Language",
+  "translationLanguageLabel": "Translation Language",
+  "downloadTypeLabel": "Download Type",
+  "downloadTypeSubtitle": "Subtitle File (.srt)",
+  "downloadTypeVideo": "Video File (.mp4)",
+  "tiktokOnly": "TikTok only",
+  "extractButton": "Extract Subtitles / Download",
+  "extracting": "Extracting...",
+  "processing": "Processing...",
+  "taskId": "Task ID",
+  "status": "Status",
+  "polling": "(Polling...)",
+  "downloadOriginal": "Download Original Subtitle",
+  "downloadVideo": "Download Video",
+  "needTranslation": "Need Translation?",
+  "getTranslation": "Get Translation",
+  "translating": "Translating...",
+  "translationResults": "Translation Results:",
+  "download": "Download"
+}
+
+
+

@@ -1,4 +1,4 @@
-{
+﻿{
   "fields": {
     "transaction_no": "Transaction No",
     "description": "Description",
@@ -19,6 +19,11 @@
   },
   "view": {
     "title": "Credits Balance",
+    "remaining": "Remaining Credits",
+    "usage": "Usage",
+    "used": "Used",
+    "total": "Total",
+    "no_credits": "No credits history available",
     "buttons": {
       "purchase": "Purchase Credits"
     }

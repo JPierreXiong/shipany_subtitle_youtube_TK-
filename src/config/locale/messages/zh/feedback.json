@@ -1,0 +1,15 @@
+﻿{
+  "title": "反馈",
+  "description": "我们很乐意听取您的意见！分享您的想法、问题或建议。",
+  "email_label": "您的邮箱",
+  "email_placeholder": "your.email@example.com",
+  "message_label": "您的消息",
+  "message_placeholder": "告诉我们您的想法...",
+  "message_hint": "请至少输入10个字符",
+  "submit_button": "发送反馈",
+  "submitting": "发送中...",
+  "submit_success": "谢谢！我们已经收到您的反馈并发送了确认邮件。",
+  "submit_error": "提交反馈失败，请重试。",
+  "invalid_email": "请输入有效的邮箱地址",
+  "message_too_short": "消息至少需要10个字符"
+}

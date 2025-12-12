@@ -1,11 +1,11 @@
-{
+﻿{
   "metadata": {
     "title": "Blog",
     "description": "Read about our latest product features, solutions, and updates."
   },
   "blog": {
     "id": "blog",
-    "sr_only_title": "ShipAny Blog",
+    "sr_only_title": "Subtitle TK Blog",
     "title": "Blog",
     "description": "Read about our latest product features, solutions, and updates."
   },
@@ -14,5 +14,17 @@
     "no_content": "No Content",
     "crumb": "Blog",
     "toc": "Table of Contents"
+  },
+  "testimonials": {
+    "title": "User Experiences",
+    "no_testimonials": "No testimonials yet. Be the first to share your experience!",
+    "share_title": "Share Your Experience",
+    "share_description": "Share how you use our subtitle tool and get 3 days free!",
+    "share_button": "Share",
+    "share_placeholder": "Tell us about your experience using our subtitle extraction tool...",
+    "share_success": "Thank you for sharing! You received 3 days bonus.",
+    "share_error": "Failed to submit testimonial",
+    "sign_in_required": "Please sign in to share your experience",
+    "submitting": "Submitting..."
   }
 }

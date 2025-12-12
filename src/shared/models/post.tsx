@@ -4,8 +4,20 @@ import { createRelativeLink } from 'fumadocs-ui/mdx';
 import moment from 'moment';
 
 import { db } from '@/core/db';
-import { pagesSource, postsSource } from '@/core/docs/source';
 import { generateTOC } from '@/core/docs/toc';
+
+// Safely import postsSource and pagesSource - they may not exist if .source folder is not generated
+let postsSource: any = null;
+let pagesSource: any = null;
+try {
+  // Use require for dynamic import in case .source folder doesn't exist
+  const sourceModule = require('@/core/docs/source');
+  postsSource = sourceModule.postsSource;
+  pagesSource = sourceModule.pagesSource;
+} catch (error) {
+  // postsSource/pagesSource not available, will use empty array
+  console.warn('postsSource/pagesSource not available, local posts/pages will be skipped');
+}
 import { post } from '@/config/db/schema';
 import { MarkdownContent } from '@/shared/blocks/common/markdown-content';
 import {
@@ -94,22 +106,38 @@ export async function getPosts({
   page?: number;
   limit?: number;
 } = {}): Promise<Post[]> {
-  const result = await db()
-    .select()
-    .from(post)
-    .where(
-      and(
-        type ? eq(post.type, type) : undefined,
-        status ? eq(post.status, status) : undefined,
-        category ? like(post.categories, `%${category}%`) : undefined,
-        tag ? like(post.tags, `%${tag}%`) : undefined
-      )
-    )
-    .orderBy(desc(post.updatedAt), desc(post.createdAt))
-    .limit(limit)
-    .offset((page - 1) * limit);
+  try {
+    // Try to get database connection
+    let dbConnection;
+    try {
+      dbConnection = db();
+    } catch (dbError: any) {
+      // If DATABASE_URL is not set or connection fails, return empty array
+      console.error('Database connection failed in getPosts:', dbError?.message || dbError);
+      return [];
+    }
 
-  return result;
+    const result = await dbConnection
+      .select()
+      .from(post)
+      .where(
+        and(
+          type ? eq(post.type, type) : undefined,
+          status ? eq(post.status, status) : undefined,
+          category ? like(post.categories, `%${category}%`) : undefined,
+          tag ? like(post.tags, `%${tag}%`) : undefined
+        )
+      )
+      .orderBy(desc(post.updatedAt), desc(post.createdAt))
+      .limit(limit)
+      .offset((page - 1) * limit);
+
+    return result || [];
+  } catch (error: any) {
+    // Log the error but don't crash - return empty array instead
+    console.error('getPosts failed:', error?.message || error);
+    return [];
+  }
 }
 
 export async function getPostsCount({
@@ -253,6 +281,10 @@ export async function getLocalPage({
   slug: string;
   locale: string;
 }): Promise<BlogPostType | null> {
+  if (!pagesSource) {
+    return null;
+  }
+  
   const localPage = await pagesSource.getPage([slug], locale);
   if (!localPage) {
     return null;
@@ -310,62 +342,106 @@ export async function getPostsAndCategories({
   let posts: BlogPostType[] = [];
   let categories: BlogCategoryType[] = [];
 
-  // merge posts from both locale and remote, remove duplicates by slug
-  // remote posts have higher priority
-  const postsMap = new Map<string, BlogPostType>();
+  try {
+    // merge posts from both locale and remote, remove duplicates by slug
+    // remote posts have higher priority
+    const postsMap = new Map<string, BlogPostType>();
 
-  // 1. get local posts
-  const {
-    posts: localPosts,
-    postsCount: localPostsCount,
-    categories: localCategories,
-    categoriesCount: localCategoriesCount,
-  } = await getLocalPostsAndCategories({
-    locale,
-    postPrefix,
-    categoryPrefix,
-  });
-
-  // add local posts to postsMap
-  localPosts.forEach((post) => {
-    if (post.slug) {
-      postsMap.set(post.slug, post);
+    // 1. get local posts
+    let localPosts: BlogPostType[] = [];
+    let localCategories: BlogCategoryType[] = [];
+    try {
+      const localResult = await getLocalPostsAndCategories({
+        locale,
+        postPrefix,
+        categoryPrefix,
+      });
+      localPosts = localResult.posts || [];
+      localCategories = localResult.categories || [];
+    } catch (error) {
+      console.error('getLocalPostsAndCategories failed:', error);
     }
-  });
 
-  // 2. get remote posts
-  const {
-    posts: remotePosts,
-    postsCount: remotePostsCount,
-    categories: remoteCategories,
-    categoriesCount: remoteCategoriesCount,
-  } = await getRemotePostsAndCategories({
-    page,
-    limit,
-    locale,
-    postPrefix,
-    categoryPrefix,
-  });
+    // add local posts to postsMap
+    localPosts.forEach((post) => {
+      if (post.slug) {
+        postsMap.set(post.slug, post);
+      }
+    });
 
-  // add remote posts to postsMap
-  remotePosts.forEach((post) => {
-    if (post.slug) {
-      postsMap.set(post.slug, post);
+    // 2. get remote posts
+    let remotePosts: BlogPostType[] = [];
+    let remoteCategories: BlogCategoryType[] = [];
+    try {
+      // Add timeout for database queries
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Database query timeout')), 8000)
+      );
+
+      const remoteResult = await Promise.race([
+        getRemotePostsAndCategories({
+          page,
+          limit,
+          locale,
+          postPrefix,
+          categoryPrefix,
+        }),
+        timeoutPromise,
+      ]);
+
+      remotePosts = remoteResult.posts || [];
+      remoteCategories = remoteResult.categories || [];
+    } catch (error) {
+      console.error('getRemotePostsAndCategories failed:', error);
+      // Continue with empty arrays on error
+      remotePosts = [];
+      remoteCategories = [];
     }
-  });
 
-  // Convert map to array and sort by created_at desc
-  posts = Array.from(postsMap.values()).sort((a, b) => {
-    const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
-    const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
-    return dateB - dateA;
-  });
+    // add remote posts to postsMap
+    remotePosts.forEach((post) => {
+      if (post.slug) {
+        postsMap.set(post.slug, post);
+      }
+    });
+
+    // Convert map to array and sort by created_at desc
+    posts = Array.from(postsMap.values()).sort((a, b) => {
+      try {
+        const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+        const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+        return dateB - dateA;
+      } catch (error) {
+        // If date parsing fails, maintain original order
+        return 0;
+      }
+    });
+
+    // Merge local and remote categories, avoiding duplicates
+    const categoriesMap = new Map<string, BlogCategoryType>();
+    localCategories.forEach((cat) => {
+      if (cat.slug) {
+        categoriesMap.set(cat.slug, cat);
+      }
+    });
+    remoteCategories.forEach((cat) => {
+      if (cat.slug) {
+        categoriesMap.set(cat.slug, cat);
+      }
+    });
+    categories = Array.from(categoriesMap.values());
+  } catch (error) {
+    console.error('getPostsAndCategories failed:', error);
+    // Return empty arrays on error
+    posts = [];
+    categories = [];
+  }
 
   return {
     posts,
     postsCount: posts.length,
-    categories: remoteCategories, // todo: merge local categories
-    categoriesCount: remoteCategoriesCount, // todo: merge local categories count
+    categories,
+    categoriesCount: categories.length,
   };
 }
 
@@ -388,12 +464,25 @@ export async function getRemotePostsAndCategories({
 
   try {
     // get posts from database
-    const dbPosts = await getPosts({
-      type: PostType.ARTICLE,
-      status: PostStatus.PUBLISHED,
-      page,
-      limit,
-    });
+    let dbPosts: Post[] = [];
+    try {
+      dbPosts = await getPosts({
+        type: PostType.ARTICLE,
+        status: PostStatus.PUBLISHED,
+        page,
+        limit,
+      });
+    } catch (dbError: any) {
+      // If database connection fails, log and continue with empty array
+      console.error('Database query failed in getRemotePostsAndCategories:', dbError?.message || dbError);
+      // Return empty arrays instead of crashing
+      return {
+        posts: [],
+        postsCount: 0,
+        categories: [],
+        categoriesCount: 0,
+      };
+    }
 
     if (!dbPosts || dbPosts.length === 0) {
       return {
@@ -423,10 +512,17 @@ export async function getRemotePostsAndCategories({
     );
 
     // get categories from database
-    const dbCategories = await getTaxonomies({
-      type: TaxonomyType.CATEGORY,
-      status: TaxonomyStatus.PUBLISHED,
-    });
+    let dbCategories: any[] = [];
+    try {
+      dbCategories = await getTaxonomies({
+        type: TaxonomyType.CATEGORY,
+        status: TaxonomyStatus.PUBLISHED,
+      });
+    } catch (dbError: any) {
+      // If database query fails, log and continue with empty array
+      console.error('Database query failed for categories:', dbError?.message || dbError);
+      dbCategories = [];
+    }
 
     dbCategoriesList.push(
       ...(dbCategories || []).map((category) => ({
@@ -460,47 +556,83 @@ export async function getLocalPostsAndCategories({
 }) {
   const localPostsList: BlogPostType[] = [];
 
-  // get posts from local files
-  const localPosts = postsSource.getPages(locale);
+  try {
+    // Try to dynamically load postsSource if not already loaded
+    if (!postsSource) {
+      try {
+        const sourceModule = await import('@/core/docs/source');
+        postsSource = sourceModule.postsSource;
+      } catch (importError) {
+        // postsSource not available
+        return {
+          posts: [],
+          postsCount: 0,
+          categories: [],
+          categoriesCount: 0,
+        };
+      }
+    }
 
-  // no local posts
-  if (!localPosts || localPosts.length === 0) {
-    return {
-      posts: [],
-      postsCount: 0,
-      categories: [],
-      categoriesCount: 0,
-    };
-  }
-
-  // Build posts data from local content
-  localPostsList.push(
-    ...localPosts.map((post) => {
-      const frontmatter = post.data as any;
-      const slug = getPostSlug({
-        url: post.url,
-        locale,
-        prefix: postPrefix,
-      });
-
+    // Check if postsSource exists and has getPages method
+    if (!postsSource || typeof postsSource.getPages !== 'function') {
       return {
-        id: post.path,
-        slug: slug,
-        title: post.data.title || '',
-        description: post.data.description || '',
-        author_name: frontmatter.author_name || '',
-        author_image: frontmatter.author_image || '',
-        created_at: frontmatter.created_at
-          ? getPostDate({
-              created_at: frontmatter.created_at,
-              locale,
-            })
-          : '',
-        image: frontmatter.image || '',
-        url: `${postPrefix}${slug}`,
+        posts: [],
+        postsCount: 0,
+        categories: [],
+        categoriesCount: 0,
       };
-    })
-  );
+    }
+
+    // get posts from local files
+    const localPosts = postsSource.getPages(locale);
+
+    // no local posts
+    if (!localPosts || localPosts.length === 0) {
+      return {
+        posts: [],
+        postsCount: 0,
+        categories: [],
+        categoriesCount: 0,
+      };
+    }
+
+    // Build posts data from local content
+    localPostsList.push(
+      ...localPosts.map((post: any) => {
+        try {
+          const frontmatter = post.data as any;
+          const slug = getPostSlug({
+            url: post.url,
+            locale,
+            prefix: postPrefix,
+          });
+
+          return {
+            id: post.path,
+            slug: slug,
+            title: post.data.title || '',
+            description: post.data.description || '',
+            author_name: frontmatter.author_name || '',
+            author_image: frontmatter.author_image || '',
+            created_at: frontmatter.created_at
+              ? getPostDate({
+                  created_at: frontmatter.created_at,
+                  locale,
+                })
+              : '',
+            image: frontmatter.image || '',
+            url: `${postPrefix}${slug}`,
+          };
+        } catch (error) {
+          console.error('Error processing local post:', error);
+          return null;
+        }
+      }).filter((post: any): post is BlogPostType => post !== null)
+    );
+  } catch (error) {
+    console.error('getLocalPostsAndCategories failed:', error);
+    // Return empty arrays on error
+  }
 
   return {
     posts: localPostsList,

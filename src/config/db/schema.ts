@@ -15,6 +15,16 @@ export const user = pgTable(
     email: text('email').notNull().unique(),
     emailVerified: boolean('email_verified').default(false).notNull(),
     image: text('image'),
+    // Customer unique ID: YYMM + 5 random digits (e.g., 251212345)
+    customerId: text('customer_id').unique(),
+    // Referrer customer ID (who referred this user) - stored as customerId string
+    referrerId: text('referrer_id'),
+    // Subscription expiration date
+    subscriptionExpiresAt: timestamp('subscription_expires_at'),
+    // Free plan flag (for free users who shared testimonial)
+    hasFreePlan: boolean('has_free_plan').default(false).notNull(),
+    // Testimonial shared flag (only once)
+    testimonialShared: boolean('testimonial_shared').default(false).notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()
@@ -26,6 +36,10 @@ export const user = pgTable(
     index('idx_user_name').on(table.name),
     // Order users by registration time for latest users list
     index('idx_user_created_at').on(table.createdAt),
+    // Query by customer ID
+    index('idx_user_customer_id').on(table.customerId),
+    // Query by referrer
+    index('idx_user_referrer_id').on(table.referrerId),
   ]
 );
 
@@ -258,6 +272,8 @@ export const subscription = pgTable(
     trialPeriodDays: integer('trial_period_days'), // subscription trial period days
     currentPeriodStart: timestamp('current_period_start'), // subscription current period start
     currentPeriodEnd: timestamp('current_period_end'), // subscription current period end
+    // Subscription expiration date (for annual plan: 10 months payment + 2 months free = 12 months)
+    expiresAt: timestamp('expires_at'), // subscription expiration date
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .$onUpdate(() => /* @__PURE__ */ new Date())
@@ -379,6 +395,17 @@ export const task = pgTable(
     originalSrtUrl: text('original_srt_url'),
     videoUrl: text('video_url'),
     error: text('error'),
+    // Video metadata fields
+    videoTitle: text('video_title'),
+    videoAuthor: text('video_author'),
+    videoDescription: text('video_description'),
+    likeCount: integer('like_count'),
+    viewCount: integer('view_count'),
+    shareCount: integer('share_count'),
+    commentCount: integer('comment_count'),
+    videoDuration: integer('video_duration'), // in seconds
+    videoThumbnail: text('video_thumbnail'),
+    videoMetadata: text('video_metadata'), // JSON string for additional metadata
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at')
       .defaultNow()
@@ -388,6 +415,7 @@ export const task = pgTable(
   (table) => [
     index('idx_task_status_created_at').on(table.status, table.createdAt),
     index('idx_task_platform').on(table.platform),
+    index('idx_task_user_id').on(table.userId),
   ]
 );
 
@@ -412,6 +440,70 @@ export const translation = pgTable(
     index('idx_translation_task').on(table.taskId),
     index('idx_translation_status').on(table.status),
     index('idx_translation_target_lang').on(table.targetLanguage),
+  ]
+);
+
+// Invitation System
+export const invitation = pgTable(
+  'invitation',
+  {
+    id: text('id').primaryKey(),
+    code: text('code').notNull().unique(), // 邀请码
+    inviterId: text('inviter_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }), // 邀请人ID
+    inviteeEmail: text('invitee_email'), // 被邀请人邮箱（可选）
+    status: text('status').notNull().default('pending'), // pending | used | expired
+    expiresAt: timestamp('expires_at').notNull(), // 过期时间
+    usedAt: timestamp('used_at'), // 使用时间
+    usedBy: text('used_by').references(() => user.id, { onDelete: 'set null' }), // 使用人ID
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [
+    // Query invitations by code (most critical)
+    index('idx_invitation_code').on(table.code),
+    // Query invitations by inviter
+    index('idx_invitation_inviter').on(table.inviterId),
+    // Query invitations by status
+    index('idx_invitation_status').on(table.status),
+    // Query active invitations (not expired, not used)
+    index('idx_invitation_expires').on(table.expiresAt),
+  ]
+);
+
+// Referral System (Customer referral rewards)
+export const referral = pgTable(
+  'referral',
+  {
+    id: text('id').primaryKey(),
+    referrerId: text('referrer_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }), // 推荐人ID
+    refereeId: text('referee_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }), // 被推荐人ID
+    referrerCustomerId: text('referrer_customer_id'), // 推荐人客户ID
+    refereeCustomerId: text('referee_customer_id'), // 被推荐人客户ID
+    rewardType: text('reward_type').notNull(), // 'referral_bonus' | 'annual_bonus' | 'testimonial'
+    rewardDays: integer('reward_days').notNull(), // 奖励天数（7天或额外2个月）
+    isPaidUser: boolean('is_paid_user').default(false).notNull(), // 被推荐人是否为付费用户
+    applied: boolean('applied').default(false).notNull(), // 奖励是否已应用
+    appliedAt: timestamp('applied_at'), // 奖励应用时间
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [
+    index('idx_referral_referrer').on(table.referrerId),
+    index('idx_referral_referee').on(table.refereeId),
+    index('idx_referral_referrer_customer').on(table.referrerCustomerId),
+    index('idx_referral_applied').on(table.applied),
   ]
 );
 
@@ -587,5 +679,32 @@ export const chatMessage = pgTable(
   (table) => [
     index('idx_chat_message_chat_id').on(table.chatId, table.status),
     index('idx_chat_message_user_id').on(table.userId, table.status),
+  ]
+);
+
+// Blog Testimonials (User sharing experiences)
+export const testimonial = pgTable(
+  'testimonial',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    userName: text('user_name').notNull(),
+    userEmail: text('user_email'),
+    customerId: text('customer_id'), // User's customer ID
+    content: text('content').notNull(), // Testimonial content
+    status: text('status').notNull().default('pending'), // pending | approved | rejected
+    approvedAt: timestamp('approved_at'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index('idx_testimonial_user').on(table.userId),
+    index('idx_testimonial_status').on(table.status),
+    index('idx_testimonial_created_at').on(table.createdAt),
   ]
 );

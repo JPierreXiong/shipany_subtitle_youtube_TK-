@@ -1,49 +1,49 @@
-{
+﻿{
   "metadata": {
-    "title": "Pricing",
-    "description": "Start with a plan"
+    "title": "Precios",
+    "description": "Comienza con un plan"
   },
   "pricing": {
     "id": "pricing",
-    "sr_only_title": "ShipAny Pricing",
-    "title": "Pricing",
-    "description": "Get all features of ShipAny, Ship your AI SaaS startups fast.",
+    "sr_only_title": "Precios de Subtitle TK",
+    "title": "Precios",
+    "description": "Obtén todas las funciones de Subtitle TK, lanza tus startups SaaS de IA rápidamente.",
     "groups": [
       {
         "name": "one-time",
-        "title": "Pay as you go"
+        "title": "Pago por uso"
       },
       {
         "name": "monthly",
-        "title": "Monthly",
+        "title": "Mensual",
         "is_featured": true,
-        "label": "save 15%"
+        "label": "ahorra 15%"
       },
       {
         "name": "yearly",
-        "title": "Annually"
+        "title": "Anual"
       }
     ],
     "items": [
       {
         "title": "Starter",
-        "description": "Free to test: YouTube/TikTok up to 3 links.",
-        "features_title": "Includes",
+        "description": "Gratis para probar: YouTube/TikTok hasta 3 enlaces.",
+        "features_title": "Incluye",
         "features": [
-          "3 YouTube or TikTok links",
-          "Up to 3 subtitle/video downloads",
-          "Translation limit 1,000 chars, 12 languages",
-          "Files kept up to 24 hours"
+          "3 enlaces de YouTube o TikTok",
+          "Hasta 3 descargas de subtítulos/video",
+          "Límite de traducción 1,000 caracteres, 12 idiomas",
+          "Archivos guardados hasta 24 horas"
         ],
         "interval": "month",
         "amount": 0,
         "currency": "USD",
         "price": "$0",
-        "unit": "/ month",
+        "unit": "/ mes",
         "is_featured": false,
-        "tip": "Free starter to validate your workflow",
+        "tip": "Starter gratis para validar tu flujo de trabajo",
         "button": {
-          "title": "Start for free",
+          "title": "Comenzar gratis",
           "url": "/#pricing",
           "icon": "RiFlashlightFill"
         },
@@ -54,24 +54,24 @@
       },
       {
         "title": "Standard",
-        "description": "Professional: more links, downloads, storage.",
+        "description": "Profesional: más enlaces, descargas, almacenamiento.",
         "label": "Popular",
-        "features_title": "Everything in Starter, plus",
+        "features_title": "Todo en Starter, más",
         "features": [
-          "800 YouTube + 500 TikTok links",
-          "Up to 1,500 downloads",
-          "Translation limit 20,000 chars, 12 languages",
-          "Cloud storage 1GB, retain files (expire after 3 days)"
+          "800 enlaces de YouTube + 500 de TikTok",
+          "Hasta 1,500 descargas",
+          "Límite de traducción 20,000 caracteres, 12 idiomas",
+          "Almacenamiento en la nube 1GB, conservar archivos (expiran después de 3 días)"
         ],
         "interval": "month",
         "amount": 1990,
         "currency": "USD",
         "price": "$19.9",
-        "unit": "/ month",
+        "unit": "/ mes",
         "is_featured": true,
-        "tip": "Best for steady usage",
+        "tip": "Ideal para uso constante",
         "button": {
-          "title": "Upgrade",
+          "title": "Actualizar",
           "url": "/#pricing",
           "icon": "RiFlashlightFill"
         },
@@ -82,23 +82,23 @@
       },
       {
         "title": "Premium",
-        "description": "Ulta: highest limits and storage.",
-        "features_title": "Everything in Standard, plus",
+        "description": "Ultra: límites y almacenamiento más altos.",
+        "features_title": "Todo en Standard, más",
         "features": [
-          "10,000 YouTube + 8,000 TikTok links",
-          "Up to 20,000 downloads",
-          "Translation limit 400,000 chars, 12 languages",
-          "Cloud storage 100GB, retain files (expire after 7 days)"
+          "10,000 enlaces de YouTube + 8,000 de TikTok",
+          "Hasta 20,000 descargas",
+          "Límite de traducción 400,000 caracteres, 12 idiomas",
+          "Almacenamiento en la nube 100GB, conservar archivos (expiran después de 7 días)"
         ],
         "interval": "month",
         "amount": 5990,
         "currency": "USD",
         "price": "$59.9",
-        "unit": "/ month",
+        "unit": "/ mes",
         "is_featured": false,
-        "tip": "For heavy production workloads",
+        "tip": "Para cargas de trabajo de producción intensivas",
         "button": {
-          "title": "Go Premium",
+          "title": "Ir a Premium",
           "url": "/#pricing",
           "icon": "RiFlashlightFill"
         },
@@ -110,7 +110,7 @@
     ]
   },
   "page": {
-    "current_plan": "Current Plan",
-    "processing": "Processing"
+    "current_plan": "Plan actual",
+    "processing": "Procesando"
   }
 }

@@ -1,8 +1,8 @@
-# ShipAny Template Two
+# Subtitle TK
 
 ## Getting Started
 
-read [ShipAny Document](https://shipany.ai/docs/quick-start) to start your AI SaaS project.
+Subtitle TK - Extract subtitles from YouTube and TikTok, translate to 12 languages, and download videos.
 
 ## Local Development (Docker + Postgres)
 
@@ -13,16 +13,17 @@ read [ShipAny Document](https://shipany.ai/docs/quick-start) to start your AI Sa
 5. (Optional) Seed RBAC roles: `pnpm rbac:init`.
 6. Run the app: `pnpm dev`.
 
-## Buy Templates
+## Features
 
-check [ShipAny Templates](https://shipany.ai/templates) to buy Business Templates.
+- Extract subtitles from YouTube and TikTok videos
+- Translate subtitles to 12 languages
+- Download TikTok videos
+- Export video metadata as CSV
 
 ## Feedback
 
-submit your feedbacks on [Github Issues](https://github.com/shipanyai/shipany-template-two/issues)
+submit your feedbacks on [Github Issues](https://github.com/JPierreXiong/shipany_subtitle_youtube_TK-/issues)
 
 ## LICENSE
 
-!!! Please do not publicly release ShipAny's Code. Illegal use will be prosecuted
-
-[ShipAny LICENSE](./LICENSE)
+[LICENSE](./LICENSE)

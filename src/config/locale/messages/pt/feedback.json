@@ -1,0 +1,17 @@
+{
+  "title": "Feedback",
+  "description": "Adoraríamos ouvir de você! Compartilhe seus pensamentos, perguntas ou sugestões.",
+  "email_label": "Seu Email",
+  "email_placeholder": "seu.email@exemplo.com",
+  "message_label": "Sua Mensagem",
+  "message_placeholder": "Conte-nos o que você pensa...",
+  "message_hint": "Por favor, forneça pelo menos 10 caracteres",
+  "submit_button": "Enviar Feedback",
+  "submitting": "Enviando...",
+  "submit_success": "Obrigado! Recebemos seu feedback e enviamos um email de confirmação.",
+  "submit_error": "Falha ao enviar feedback. Por favor, tente novamente.",
+  "invalid_email": "Por favor, insira um endereço de email válido",
+  "message_too_short": "A mensagem deve ter pelo menos 10 caracteres"
+}
+
+

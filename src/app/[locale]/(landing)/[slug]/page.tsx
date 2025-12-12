@@ -14,6 +14,15 @@ export async function generateMetadata({
 
   const { locale, slug } = await params;
 
+  // Prevent locale codes from being used as slugs in metadata
+  const { locales } = await import('@/config/locale');
+  if (locales.includes(slug)) {
+    return {
+      title: t('title'),
+      description: t('description'),
+    };
+  }
+
   const canonicalUrl =
     locale !== envConfigs.locale
       ? `${envConfigs.app_url}/${locale}/${slug}`
@@ -46,6 +55,13 @@ export default async function DynamicPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+
+  // Prevent locale codes from being used as slugs
+  // If slug is a valid locale, redirect to the locale root
+  const { locales } = await import('@/config/locale');
+  if (locales.includes(slug)) {
+    return notFound();
+  }
 
   // Get the page from pagesSource
   const page = await getLocalPage({ slug, locale });

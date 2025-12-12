@@ -236,31 +236,70 @@ export default async function BillingPage({
         buttons={buttons}
         className="max-w-md"
       >
-        <div className="text-primary text-3xl font-bold">
-          {currentSubscription?.planName || t('view.no_subscription')}
+        <div className="space-y-4">
+          <div className="text-primary text-3xl font-bold">
+            {currentSubscription?.planName || t('view.no_subscription')}
+          </div>
+          
+          {currentSubscription ? (
+            <>
+              {currentSubscription?.status === SubscriptionStatus.ACTIVE ||
+              currentSubscription?.status === SubscriptionStatus.TRIALING ? (
+                <>
+                  <div className="grid gap-4 text-sm">
+                    {currentSubscription.currentPeriodStart && (
+                      <div className="p-3 rounded-lg bg-muted/50">
+                        <div className="text-muted-foreground text-xs mb-1">{t('view.payment_date')}</div>
+                        <div className="text-foreground font-semibold">
+                          {moment(currentSubscription.currentPeriodStart).format('YYYY-MM-DD HH:mm')}
+                        </div>
+                        <div className="text-muted-foreground mt-1 text-xs">
+                          {moment(currentSubscription.currentPeriodStart).fromNow()}
+                        </div>
+                      </div>
+                    )}
+                    {currentSubscription.currentPeriodEnd && (
+                      <div className="p-3 rounded-lg bg-primary/10">
+                        <div className="text-muted-foreground text-xs mb-1">{t('view.next_payment_date')}</div>
+                        <div className="text-primary font-semibold">
+                          {moment(currentSubscription.currentPeriodEnd).format('YYYY-MM-DD HH:mm')}
+                        </div>
+                        <div className="text-muted-foreground mt-1 text-xs">
+                          {moment(currentSubscription.currentPeriodEnd).fromNow()}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-muted-foreground mt-4 p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20 text-sm">
+                    {t('view.tip', {
+                      date: moment(currentSubscription?.currentPeriodEnd).format(
+                        'YYYY-MM-DD'
+                      ),
+                    })}
+                  </div>
+                </>
+              ) : (
+                <div className="text-destructive mt-4 p-3 rounded-lg bg-red-50 dark:bg-red-950/20 text-sm">
+                  {t('view.end_tip', {
+                    date: moment(currentSubscription?.canceledEndAt).format(
+                      'YYYY-MM-DD'
+                    ),
+                  })}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="p-4 rounded-lg bg-muted/50">
+              <div className="text-muted-foreground text-sm mb-2">{t('view.registration_date')}</div>
+              <div className="text-foreground text-lg font-semibold">
+                {moment(user.createdAt).format('YYYY-MM-DD HH:mm')}
+              </div>
+              <div className="text-muted-foreground mt-2 text-xs">
+                Member for {moment(user.createdAt).fromNow(true)}
+              </div>
+            </div>
+          )}
         </div>
-        {currentSubscription ? (
-          <>
-            {currentSubscription?.status === SubscriptionStatus.ACTIVE ||
-            currentSubscription?.status === SubscriptionStatus.TRIALING ? (
-              <div className="text-muted-foreground mt-4 text-sm font-normal">
-                {t('view.tip', {
-                  date: moment(currentSubscription?.currentPeriodEnd).format(
-                    'YYYY-MM-DD'
-                  ),
-                })}
-              </div>
-            ) : (
-              <div className="text-destructive mt-4 text-sm font-normal">
-                {t('view.end_tip', {
-                  date: moment(currentSubscription?.canceledEndAt).format(
-                    'YYYY-MM-DD'
-                  ),
-                })}
-              </div>
-            )}
-          </>
-        ) : null}
       </PanelCard>
       <TableCard title={t('list.title')} tabs={tabs} table={table} />
     </div>

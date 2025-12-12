@@ -1,0 +1,28 @@
+﻿{
+  "title": "Ferramentas de legendas alimentadas por IA",
+  "subtitle": "Extração de legendas do Youtube e TikTok e download de vídeos do TikTok com suporte para 12 idiomas",
+  "inputLabel": "Digite o link do YouTube ou TikTok",
+  "inputPlaceholder": "https://www.youtube.com/watch?v=... ou https://www.tiktok.com/@...",
+  "nativeLanguageLabel": "Idioma nativo",
+  "translationLanguageLabel": "Idioma de tradução",
+  "downloadTypeLabel": "Tipo de download",
+  "downloadTypeSubtitle": "Arquivo de legendas (.srt)",
+  "downloadTypeVideo": "Arquivo de vídeo (.mp4)",
+  "tiktokOnly": "Apenas TikTok",
+  "extractButton": "Extrair legendas / Baixar",
+  "extracting": "Extraindo...",
+  "processing": "Processando...",
+  "taskId": "ID da tarefa",
+  "status": "Status",
+  "polling": "(Consultando...)",
+  "downloadOriginal": "Baixar legendas originais",
+  "downloadVideo": "Baixar vídeo",
+  "needTranslation": "Precisa de tradução?",
+  "getTranslation": "Obter tradução",
+  "translating": "Traduzindo...",
+  "translationResults": "Resultados da tradução:",
+  "download": "Baixar"
+}
+
+
+

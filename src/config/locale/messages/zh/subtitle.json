@@ -1,0 +1,28 @@
+﻿{
+  "title": "AI 驱动的字幕工具",
+  "subtitle": "支持从 YouTube 和 TikTok 提取字幕，以及从 TikTok 下载视频，支持 12 种语言",
+  "inputLabel": "输入 YouTube 或 TikTok 链接",
+  "inputPlaceholder": "https://www.youtube.com/watch?v=... 或 https://www.tiktok.com/@...",
+  "nativeLanguageLabel": "原始语言",
+  "translationLanguageLabel": "翻译语言",
+  "downloadTypeLabel": "下载类型",
+  "downloadTypeSubtitle": "字幕文件 (.srt)",
+  "downloadTypeVideo": "视频文件 (.mp4)",
+  "tiktokOnly": "仅 TikTok",
+  "extractButton": "提取字幕 / 下载",
+  "extracting": "提取中...",
+  "processing": "处理中...",
+  "taskId": "任务 ID",
+  "status": "状态",
+  "polling": "（轮询中...）",
+  "downloadOriginal": "下载原始字幕",
+  "downloadVideo": "下载视频",
+  "needTranslation": "需要翻译？",
+  "getTranslation": "获取翻译",
+  "translating": "翻译中...",
+  "translationResults": "翻译结果：",
+  "download": "下载"
+}
+
+
+

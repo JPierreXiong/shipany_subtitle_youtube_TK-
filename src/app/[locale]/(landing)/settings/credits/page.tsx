@@ -2,28 +2,14 @@ import { getTranslations } from 'next-intl/server';
 
 import { Empty } from '@/shared/blocks/common';
 import { PanelCard } from '@/shared/blocks/panel';
-import { TableCard } from '@/shared/blocks/table';
+import { TestimonialsList } from '@/shared/blocks/testimonials-list';
 import {
-  Credit,
-  CreditStatus,
-  CreditTransactionType,
-  getCredits,
-  getCreditsCount,
   getRemainingCredits,
+  getCreditUsageStats,
 } from '@/shared/models/credit';
 import { getUserInfo } from '@/shared/models/user';
-import { Tab } from '@/shared/types/blocks/common';
-import { type Table } from '@/shared/types/blocks/table';
 
-export default async function CreditsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ page?: number; pageSize?: number; type?: string }>;
-}) {
-  const { page: pageNum, pageSize, type } = await searchParams;
-  const page = pageNum || 1;
-  const limit = pageSize || 20;
-
+export default async function CreditsPage() {
   const user = await getUserInfo();
   if (!user) {
     return <Empty message="no auth" />;
@@ -31,91 +17,8 @@ export default async function CreditsPage({
 
   const t = await getTranslations('settings.credits');
 
-  const total = await getCreditsCount({
-    transactionType: type as CreditTransactionType,
-    userId: user.id,
-    status: CreditStatus.ACTIVE,
-  });
-
-  const credits = await getCredits({
-    userId: user.id,
-    status: CreditStatus.ACTIVE,
-    transactionType: type as CreditTransactionType,
-    page,
-    limit,
-  });
-
-  const table: Table = {
-    title: t('list.title'),
-    columns: [
-      {
-        name: 'transactionNo',
-        title: t('fields.transaction_no'),
-        type: 'copy',
-      },
-      { name: 'description', title: t('fields.description') },
-      {
-        name: 'transactionType',
-        title: t('fields.type'),
-        type: 'label',
-        metadata: { variant: 'outline' },
-      },
-      {
-        name: 'transactionScene',
-        title: t('fields.scene'),
-        type: 'label',
-        placeholder: '-',
-        metadata: { variant: 'outline' },
-      },
-      {
-        name: 'credits',
-        title: t('fields.credits'),
-        type: 'label',
-        metadata: { variant: 'outline' },
-      },
-      {
-        name: 'expiresAt',
-        title: t('fields.expires_at'),
-        type: 'time',
-        placeholder: '-',
-        metadata: { format: 'YYYY-MM-DD HH:mm:ss' },
-      },
-      {
-        name: 'createdAt',
-        title: t('fields.created_at'),
-        type: 'time',
-      },
-    ],
-    data: credits,
-    pagination: {
-      total,
-      page,
-      limit,
-    },
-  };
-
   const remainingCredits = await getRemainingCredits(user.id);
-
-  const tabs: Tab[] = [
-    {
-      title: t('list.tabs.all'),
-      name: 'all',
-      url: '/settings/credits',
-      is_active: !type || type === 'all',
-    },
-    {
-      title: t('list.tabs.grant'),
-      name: 'grant',
-      url: '/settings/credits?type=grant',
-      is_active: type === 'grant',
-    },
-    {
-      title: t('list.tabs.consume'),
-      name: 'consume',
-      url: '/settings/credits?type=consume',
-      is_active: type === 'consume',
-    },
-  ];
+  const creditStats = await getCreditUsageStats(user.id);
 
   return (
     <div className="space-y-8">
@@ -131,11 +34,77 @@ export default async function CreditsPage({
         ]}
         className="max-w-md"
       >
-        <div className="text-primary text-3xl font-bold">
-          {remainingCredits}
+        <div className="space-y-6">
+          {/* Remaining Credits */}
+          <div className="text-center p-6 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5">
+            <div className="text-muted-foreground text-sm mb-2">{t('view.remaining')}</div>
+            <div className="text-primary text-5xl font-bold">
+              {remainingCredits.toLocaleString()}
+            </div>
+            <div className="text-muted-foreground mt-2 text-sm">Credits</div>
+          </div>
+          
+          {/* Usage Statistics */}
+          {creditStats.totalGranted > 0 ? (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground text-sm">{t('view.usage')}</span>
+                <span className="text-2xl font-bold text-primary">
+                  {creditStats.usagePercentage}%
+                </span>
+              </div>
+              
+              {/* Progress Bar */}
+              <div className="space-y-2">
+                <div className="relative h-4 w-full overflow-hidden rounded-full bg-secondary">
+                  <div
+                    className={`h-full transition-all duration-500 ${
+                      creditStats.usagePercentage >= 90
+                        ? 'bg-red-500'
+                        : creditStats.usagePercentage >= 70
+                        ? 'bg-yellow-500'
+                        : 'bg-green-500'
+                    }`}
+                    style={{ width: `${creditStats.usagePercentage}%` }}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div className="text-center">
+                    <div className="text-muted-foreground">{t('view.used')}</div>
+                    <div className="font-semibold text-foreground">
+                      {creditStats.totalConsumed.toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-muted-foreground">{t('view.remaining')}</div>
+                    <div className="font-semibold text-green-600">
+                      {creditStats.remaining.toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-muted-foreground">{t('view.total')}</div>
+                    <div className="font-semibold text-foreground">
+                      {creditStats.totalGranted.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center p-4 rounded-lg bg-muted/50">
+              <div className="text-muted-foreground text-sm">
+                {t('view.no_credits') || 'No credits history'}
+              </div>
+            </div>
+          )}
         </div>
       </PanelCard>
-      <TableCard title={t('list.title')} tabs={tabs} table={table} />
+      
+      {/* Customer Testimonials */}
+      <div className="w-full">
+        <TestimonialsList limit={20} />
+      </div>
     </div>
   );
 }

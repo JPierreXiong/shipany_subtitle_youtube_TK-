@@ -75,10 +75,25 @@ export async function getUserByUserIds(userIds: string[]) {
   return result;
 }
 
-export async function getUserInfo() {
+export async function getUserInfo(): Promise<User | null> {
   const signUser = await getSignUser();
+  if (!signUser) {
+    return null;
+  }
 
-  return signUser;
+  // Fetch full user data from database to include all fields
+  const fullUser = await findUserById(signUser.id);
+  if (!fullUser) {
+    return signUser as User;
+  }
+
+  return {
+    ...fullUser,
+    isAdmin: (signUser as any).isAdmin,
+    credits: (signUser as any).credits,
+    roles: (signUser as any).roles,
+    permissions: (signUser as any).permissions,
+  };
 }
 
 export async function getUserCredits(userId: string) {

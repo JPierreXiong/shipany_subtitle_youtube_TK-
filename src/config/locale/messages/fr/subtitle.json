@@ -1,0 +1,28 @@
+﻿{
+  "title": "Outils de sous-titres alimentés par l'IA",
+  "subtitle": "Extraction de sous-titres depuis Youtube et TikTok et téléchargement de vidéos depuis TikTok prenant en charge 12 langues",
+  "inputLabel": "Entrez le lien YouTube ou TikTok",
+  "inputPlaceholder": "https://www.youtube.com/watch?v=... ou https://www.tiktok.com/@...",
+  "nativeLanguageLabel": "Langue d'origine",
+  "translationLanguageLabel": "Langue de traduction",
+  "downloadTypeLabel": "Type de téléchargement",
+  "downloadTypeSubtitle": "Fichier de sous-titres (.srt)",
+  "downloadTypeVideo": "Fichier vidéo (.mp4)",
+  "tiktokOnly": "TikTok uniquement",
+  "extractButton": "Extraire les sous-titres / Télécharger",
+  "extracting": "Extraction...",
+  "processing": "Traitement...",
+  "taskId": "ID de tâche",
+  "status": "Statut",
+  "polling": "(Interrogation...)",
+  "downloadOriginal": "Télécharger les sous-titres originaux",
+  "downloadVideo": "Télécharger la vidéo",
+  "needTranslation": "Besoin d'une traduction ?",
+  "getTranslation": "Obtenir la traduction",
+  "translating": "Traduction...",
+  "translationResults": "Résultats de traduction :",
+  "download": "Télécharger"
+}
+
+
+

@@ -51,8 +51,9 @@ export function LocaleDetector() {
 
   const switchToLocale = useCallback(
     (locale: string) => {
+      // ⚠️ CRITICAL FIX: 完全依赖 URL 路径，不设置任何 localStorage
+      // URL 路径是唯一的语言源，避免与 LocaleSelector 和 proxy.ts 冲突
       router.replace(pathname, { locale });
-      cacheSet(PREFERRED_LOCALE_KEY, locale);
       setShowBanner(false);
     },
     [router, pathname]
@@ -70,34 +71,26 @@ export function LocaleDetector() {
     const detectedLocale = detectBrowserLocale();
     setBrowserLocale(detectedLocale);
 
-    // Check if user has dismissed the banner or already set a preference
+    // Check if user has dismissed the banner
     const dismissed = isDismissed();
-    const preferredLocale = cacheGet(PREFERRED_LOCALE_KEY);
 
-    // If user has previously clicked to switch locale, auto-switch to that preference
-    if (
-      preferredLocale &&
-      preferredLocale !== currentLocale &&
-      locales.includes(preferredLocale)
-    ) {
-      switchToLocale(preferredLocale);
-      return;
-    }
+    // ⚠️ CRITICAL FIX: 完全移除对 localStorage 'locale' 的读取
+    // URL 路径是唯一的语言源，不再依赖 localStorage 中的偏好设置
+    // 这样可以避免与 LocaleSelector 和 proxy.ts 的冲突
 
     // Show banner if:
     // 1. Browser locale is different from current locale
     // 2. User hasn't dismissed the banner (or dismissal has expired)
     // 3. Browser locale is supported
-    // 4. User hasn't set a preference yet (no auto-switch, only show banner)
+    // 只显示提示横幅，不自动切换，让用户手动选择
     if (
       detectedLocale &&
       detectedLocale !== currentLocale &&
-      !dismissed &&
-      !preferredLocale
+      !dismissed
     ) {
       setShowBanner(true);
     }
-  }, [currentLocale, switchToLocale]);
+  }, [currentLocale]);
 
   // Adjust header and main content position when banner is shown
   useEffect(() => {

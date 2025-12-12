@@ -1,42 +1,42 @@
-{
+﻿{
   "metadata": {
-    "title": "ShipAny Template Two",
-    "description": "ShipAny is a NextJS boilerplate for building AI SaaS startups. Ship Fast with a variety of templates and components.",
-    "keywords": "shipany, shipany-boilerplate, shipany-template-two-demo"
+    "title": "Subtitle TK Template Two",
+    "description": "",
+    "keywords": "Subtitle TK, Subtitle TK-boilerplate, Subtitle TK-template-two-demo"
   },
   "sign": {
-    "sign_in_title": "Sign In",
-    "sign_in_description": "Sign in to your account",
-    "sign_up_title": "Sign Up",
-    "sign_up_description": "Create an account",
-    "email_title": "Email",
-    "email_placeholder": "Input your email here",
-    "password_title": "Password",
-    "password_placeholder": "Input your password here",
-    "forgot_password": "Forgot password?",
-    "or": "Or",
-    "continue": "Continue",
-    "no_account": "Don't have an account?",
-    "already_have_account": "Already have an account?",
-    "email_sign_in": "Sign in with Email",
-    "google_sign_in_title": "Sign in with Google",
-    "github_sign_in_title": "Sign in with GitHub",
-    "close_title": "Close",
-    "cancel_title": "Cancel",
-    "sign_out_title": "Sign Out",
-    "billing_title": "Billing",
-    "name_title": "Name",
-    "name_placeholder": "Input your name here",
-    "admin_title": "Admin System",
-    "credits_title": "Credits: {credits}"
+    "sign_in_title": "Iniciar sesión",
+    "sign_in_description": "Inicia sesión en tu cuenta",
+    "sign_up_title": "Registrarse",
+    "sign_up_description": "Crear una cuenta",
+    "email_title": "Correo electrónico",
+    "email_placeholder": "Ingresa tu correo aquí",
+    "password_title": "Contraseña",
+    "password_placeholder": "Ingresa tu contraseña aquí",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "or": "O",
+    "continue": "Continuar",
+    "no_account": "¿No tienes una cuenta?",
+    "already_have_account": "¿Ya tienes una cuenta?",
+    "email_sign_in": "Iniciar sesión con correo",
+    "google_sign_in_title": "Iniciar sesión con Google",
+    "github_sign_in_title": "Iniciar sesión con GitHub",
+    "close_title": "Cerrar",
+    "cancel_title": "Cancelar",
+    "sign_out_title": "Cerrar sesión",
+    "billing_title": "Facturación",
+    "name_title": "Nombre",
+    "name_placeholder": "Ingresa tu nombre aquí",
+    "admin_title": "Sistema de administración",
+    "credits_title": "Créditos: {credits}"
   },
   "payment": {
-    "choose_payment_method": "Choose Payment Method",
+    "choose_payment_method": "Elegir método de pago",
     "choose_payment_method_description": "",
-    "cancel_title": "Cancel"
+    "cancel_title": "Cancelar"
   },
   "locale_detector": {
-    "title": "We detected your browser language is {locale}. Switch to it?",
-    "switch_to": "Switch to {locale}"
+    "title": "Detectamos que el idioma de tu navegador es {locale}. ¿Cambiar a este idioma?",
+    "switch_to": "Cambiar a {locale}"
   }
 }

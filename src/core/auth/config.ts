@@ -21,6 +21,7 @@ export const authOptions = {
   },
   emailAndPassword: {
     enabled: true,
+    minPasswordLength: 8,
   },
   logger: {
     verboseLogging: false,
@@ -44,6 +45,7 @@ export async function getAuthOptions() {
       : null,
     emailAndPassword: {
       enabled: configs.email_auth_enabled !== 'false',
+      minPasswordLength: 8,
     },
     socialProviders: await getSocialProviders(configs),
     plugins:

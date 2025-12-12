@@ -1,18 +1,30 @@
-{
+﻿{
   "metadata": {
     "title": "Blog",
-    "description": "Read about our latest product features, solutions, and updates."
+    "description": "Lisez nos dernières fonctionnalités produits, solutions et mises à jour."
   },
   "blog": {
     "id": "blog",
-    "sr_only_title": "ShipAny Blog",
+    "sr_only_title": "Blog Subtitle TK",
     "title": "Blog",
-    "description": "Read about our latest product features, solutions, and updates."
+    "description": "Lisez nos dernières fonctionnalités produits, solutions et mises à jour."
   },
   "page": {
-    "all": "All",
-    "no_content": "No Content",
+    "all": "Tout",
+    "no_content": "Aucun contenu",
     "crumb": "Blog",
-    "toc": "Table of Contents"
+    "toc": "Table des matières"
+  },
+  "testimonials": {
+    "title": "Expériences utilisateur",
+    "no_testimonials": "Aucun témoignage pour le moment. Soyez le premier à partager votre expérience !",
+    "share_title": "Partagez votre expérience",
+    "share_description": "Partagez comment vous utilisez notre outil de sous-titres et obtenez 3 jours gratuits !",
+    "share_button": "Partager",
+    "share_placeholder": "Parlez-nous de votre expérience avec notre outil d'extraction de sous-titres...",
+    "share_success": "Merci d'avoir partagé ! Vous avez reçu 3 jours de bonus.",
+    "share_error": "Échec de la soumission du témoignage",
+    "sign_in_required": "Veuillez vous connecter pour partager votre expérience",
+    "submitting": "Envoi..."
   }
 }

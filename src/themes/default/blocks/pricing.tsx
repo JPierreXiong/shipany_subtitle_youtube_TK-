@@ -201,6 +201,14 @@ export function Pricing({
     }
   };
 
+  // Creem product IDs and their payment URLs (using payment_product_id, not product_id)
+  const CREEM_PRODUCTS: Record<string, string> = {
+    'prod_7c1FZHQeCCFczvNU5dYWEj': 'https://www.creem.io/test/payment/prod_7c1FZHQeCCFczvNU5dYWEj',
+    'prod_1pM4Co56OhCMC7EkwMjVf': 'https://www.creem.io/test/payment/prod_1pM4Co56OhCMC7EkwMjVf',
+    'prod_55OLI8OQq1I048Jn8IPYuN': 'https://www.creem.io/test/payment/prod_55OLI8OQq1I048Jn8IPYuN',
+    'prod_67wmwvV2gVSBnblWES0uuN': 'https://www.creem.io/test/payment/prod_67wmwvV2gVSBnblWES0uuN',
+  };
+
   const handlePayment = async (item: PricingItem) => {
     if (!user) {
       setIsShowSignModal(true);
@@ -210,6 +218,21 @@ export function Pricing({
     // Use displayed item with selected currency
     const displayedItem =
       itemCurrencies[item.product_id]?.displayedItem || item;
+
+    // Check if this is a Creem product and redirect directly (use payment_product_id)
+    const creemUrl = CREEM_PRODUCTS[displayedItem.payment_product_id || ''];
+    if (creemUrl) {
+      // Add user email and customer ID to URL for tracking
+      const url = new URL(creemUrl);
+      if (user.email) {
+        url.searchParams.set('customer_email', user.email);
+      }
+      if (user.customerId) {
+        url.searchParams.set('customer_id', user.customerId);
+      }
+      window.location.href = url.toString();
+      return;
+    }
 
     if (configs.select_payment_enabled === 'true') {
       setPricingItem(displayedItem);

@@ -1,11 +1,11 @@
-{
+﻿{
   "metadata": {
     "title": "博客",
     "description": "阅读我们最新的产品功能、解决方案和更新内容。"
   },
   "blog": {
     "id": "blog",
-    "sr_only_title": "ShipAny 博客",
+    "sr_only_title": "Subtitle TK 博客",
     "title": "博客",
     "description": "阅读我们最新的产品功能、解决方案和更新内容。"
   },
@@ -14,5 +14,17 @@
     "no_content": "暂无内容",
     "crumb": "博客",
     "toc": "目录"
+  },
+  "testimonials": {
+    "title": "用户使用体会",
+    "no_testimonials": "还没有使用体会。成为第一个分享你的体验吧！",
+    "share_title": "分享你的使用体会",
+    "share_description": "分享你如何使用我们的字幕工具，获得3天免费使用！",
+    "share_button": "分享",
+    "share_placeholder": "告诉我们你使用我们的字幕提取工具的经历...",
+    "share_success": "感谢分享！你获得了3天奖励。",
+    "share_error": "提交失败",
+    "sign_in_required": "请先登录以分享你的体验",
+    "submitting": "提交中..."
   }
 }

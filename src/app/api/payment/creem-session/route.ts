@@ -4,14 +4,15 @@ import { eq } from 'drizzle-orm';
 
 import { db } from '@/core/db';
 import { task } from '@/config/db/schema';
-import { creem } from '@/lib/creem';
+// TODO: Fix creem integration - this route needs to use CreemProvider from extensions/payment
+// import { creem } from '@/lib/creem';
 import { getUuid } from '@/shared/lib/hash';
 import { respData, respErr } from '@/shared/lib/resp';
 
 type ServiceType = 'EXTRACT_SUBTITLE' | 'DOWNLOAD_VIDEO';
 
 function getUserIdFromRequest(req: NextRequest): string | null {
-  // TODO: integrate Shipany auth; for now, accept header or fallback
+  // TODO: integrate Subtitle TK auth; for now, accept header or fallback
   const h = req.headers.get('x-user-id');
   if (h) return h;
   return 'demo-user';
@@ -54,34 +55,17 @@ export async function POST(req: NextRequest) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
   try {
-    const session = await creem.checkout.sessions.create({
-      payment_method_types: ['card', 'wechat', 'alipay'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'usd',
-            product_data: { name: productName },
-            unit_amount: amountInCents,
-          },
-          quantity: 1,
-        },
-      ],
-      mode: 'payment',
-      success_url: `${baseUrl}/success?task_id=${taskId}`,
-      cancel_url: `${baseUrl}/cancel?task_id=${taskId}`,
-      metadata: {
-        taskId,
-        userId,
-        platform,
-      },
-    });
-
-    await db()
-      .update(task)
-      .set({ creemSessionId: session.id })
-      .where(eq(task.id, taskId));
-
-    return respData({ url: session.url, taskId });
+    // TODO: Implement proper Creem checkout session creation using CreemProvider
+    // This requires product_id setup in Creem dashboard
+    return respErr('creem session creation not implemented - please use standard checkout API');
+    
+    // Example implementation:
+    // const paymentService = await getPaymentService();
+    // const creemProvider = paymentService.getProvider('creem');
+    // if (!creemProvider) {
+    //   return respErr('creem provider not configured');
+    // }
+    // const result = await creemProvider.createPayment({ order: {...} });
   } catch (error: any) {
     return respErr(error?.message || 'creem session failed');
   }

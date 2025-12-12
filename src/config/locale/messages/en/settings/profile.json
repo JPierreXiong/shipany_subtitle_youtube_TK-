@@ -1,8 +1,19 @@
-{
+﻿{
   "fields": {
     "email": "Email",
     "name": "Name",
     "avatar": "Avatar"
+  },
+  "info": {
+    "title": "Account Information",
+    "customer_id": "Customer ID",
+    "email": "Email",
+    "member_since": "Member Since",
+    "subscription_expires": "Subscription Expires",
+    "current_plan": "Current Plan",
+    "referred_by": "Referred By",
+    "not_assigned": "Not assigned",
+    "no_plan": "No active plan"
   },
   "edit": {
     "title": "Profile",
@@ -14,5 +25,12 @@
     "buttons": {
       "submit": "Save"
     }
+  },
+  "stats": {
+    "title": "Usage Statistics",
+    "total_tasks": "Total Tasks",
+    "completed_tasks": "Completed Tasks",
+    "failed_tasks": "Failed Tasks",
+    "download_count": "Download Count"
   }
 }

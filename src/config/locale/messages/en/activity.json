@@ -1,0 +1,43 @@
+﻿{
+  "stats": {
+    "total": "Total Extractions",
+    "total_description": "Total number of subtitle extractions",
+    "completed": "Completed",
+    "completed_description": "Successfully completed extractions",
+    "failed": "Failed",
+    "failed_description": "Failed extractions",
+    "in_progress": "In Progress",
+    "in_progress_description": "Pending or processing extractions",
+    "downloadable_files": "Downloadable Files",
+    "downloadable_files_description": "Files available for download",
+    "storage_used": "Storage Used",
+    "storage_used_description": "Estimated storage space used",
+    "usage_rate": "Usage Rate",
+    "usage_rate_description": "Overall task completion rate"
+  },
+  "feedbacks": {
+    "title": "Subtitle Extraction History",
+    "empty_message": "No extraction history yet",
+    "tabs": {
+      "all": "All",
+      "completed": "Completed",
+      "failed": "Failed",
+      "pending": "Pending"
+    },
+    "fields": {
+      "platform": "Platform",
+      "status": "Status",
+      "service_type": "Service Type",
+      "video_title": "Video Title",
+      "video_author": "Video Author",
+      "stats": "Statistics",
+      "created_at": "Created At",
+      "action": "Action"
+    },
+    "actions": {
+      "download_srt": "Download SRT",
+      "download_video": "Download Video"
+    }
+  }
+}
+

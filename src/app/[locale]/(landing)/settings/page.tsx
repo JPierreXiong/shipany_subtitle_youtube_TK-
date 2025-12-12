@@ -1,4 +1,5 @@
-import { redirect } from '@/core/i18n/navigation';
+import { redirect } from 'next/navigation';
+import { defaultLocale } from '@/config/locale';
 
 export default async function SettingsPage({
   params,
@@ -6,6 +7,7 @@ export default async function SettingsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-
-  redirect({ href: '/settings/profile', locale });
+  const targetLocale = locale || defaultLocale;
+  
+  redirect(`/${targetLocale}/settings/profile`);
 }

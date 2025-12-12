@@ -1,4 +1,4 @@
-{
+﻿{
   "fields": {
     "subscription_no": "订阅号",
     "interval": "周期",
@@ -13,6 +13,9 @@
   },
   "view": {
     "title": "当前计划",
+    "payment_date": "付款日期",
+    "next_payment_date": "下次付款日期",
+    "registration_date": "注册日期",
     "tip": "你的订阅将在 {date} 自动续费",
     "end_tip": "你的订阅将在 {date} 自动取消",
     "no_subscription": "未订阅",

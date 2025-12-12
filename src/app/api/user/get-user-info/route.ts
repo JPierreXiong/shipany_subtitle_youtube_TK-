@@ -12,15 +12,27 @@ export async function POST(req: Request) {
       return respErr('no auth, please sign in');
     }
 
-    // check if user is admin
-    const isAdmin = await hasPermission(user.id, PERMISSIONS.ADMIN_ACCESS);
+    // check if user is admin (with error handling)
+    let isAdmin = false;
+    try {
+      isAdmin = await hasPermission(user.id, PERMISSIONS.ADMIN_ACCESS);
+    } catch (e) {
+      console.log('check admin permission failed:', e);
+      // Continue without admin check if it fails
+    }
 
-    // get remaining credits
-    const remainingCredits = await getRemainingCredits(user.id);
+    // get remaining credits (with error handling)
+    let remainingCredits = 0;
+    try {
+      remainingCredits = await getRemainingCredits(user.id);
+    } catch (e) {
+      console.log('get remaining credits failed:', e);
+      // Continue with 0 credits if it fails
+    }
 
     return respData({ ...user, isAdmin, credits: { remainingCredits } });
-  } catch (e) {
-    console.log('get user info failed:', e);
-    return respErr('get user info failed');
+  } catch (e: any) {
+    console.error('get user info failed:', e);
+    return respErr(e?.message || 'get user info failed');
   }
 }

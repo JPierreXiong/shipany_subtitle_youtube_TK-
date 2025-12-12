@@ -1,13 +1,13 @@
-{
+﻿{
   "metadata": {
     "title": "Pricing",
     "description": "Start with a plan"
   },
   "pricing": {
     "id": "pricing",
-    "sr_only_title": "ShipAny Pricing",
+    "sr_only_title": "Subtitle TK Pricing",
     "title": "Pricing",
-    "description": "Get all features of ShipAny, Ship your AI SaaS startups fast.",
+    "description": "Get all features of Subtitle TK, Ship your AI SaaS startups fast.",
     "groups": [
       {
         "name": "one-time",

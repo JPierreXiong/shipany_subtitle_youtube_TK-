@@ -16,10 +16,6 @@ export default function AuthLayout({
         <BrandLogo
           brand={{
             title: envConfigs.app_name,
-            logo: {
-              src: '/logo.png',
-              alt: envConfigs.app_name,
-            },
             url: '/',
             target: '_self',
             className: '',

@@ -26,7 +26,10 @@ export function db() {
   }
 
   if (!databaseUrl) {
-    throw new Error('DATABASE_URL is not set');
+    console.error('DATABASE_URL is not set');
+    // Instead of throwing, return a mock db instance that will fail gracefully
+    // This prevents the entire app from crashing when DATABASE_URL is missing
+    throw new Error('DATABASE_URL is not set. Please configure your database connection in .env.local');
   }
 
   // In Cloudflare Workers, create new connection each time

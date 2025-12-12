@@ -1,0 +1,153 @@
+{
+  "timestamp": "2025-12-12T06:22:21.577Z",
+  "locale": "fr",
+  "baseUrl": "http://localhost:3000",
+  "totalSteps": 7,
+  "passedSteps": 0,
+  "failedSteps": 0,
+  "skippedSteps": 7,
+  "results": [
+    {
+      "step": "1. 访问首页并切换到法语",
+      "status": "skip",
+      "message": "需要手动验证或使用浏览器自动化工具",
+      "url": "http://localhost:3000/fr",
+      "expectedFrenchTexts": [
+        "Tarifs",
+        "Commentaires",
+        "Se déconnecter",
+        "Facturation"
+      ],
+      "foundEnglishTexts": [
+        "Pricing",
+        "Feedback",
+        "Sign Out",
+        "Billing"
+      ]
+    },
+    {
+      "step": "2. 访问注册页面",
+      "status": "skip",
+      "message": "需要手动验证或使用浏览器自动化工具",
+      "url": "http://localhost:3000/fr/sign-up",
+      "expectedFrenchTexts": [
+        "S'inscrire",
+        "Créer un compte",
+        "Email",
+        "Mot de passe",
+        "Continuer"
+      ],
+      "foundEnglishTexts": [
+        "Sign Up",
+        "Create an account",
+        "Email",
+        "Password",
+        "Continue"
+      ]
+    },
+    {
+      "step": "3. 访问登录页面",
+      "status": "skip",
+      "message": "需要手动验证或使用浏览器自动化工具",
+      "url": "http://localhost:3000/fr/sign-in",
+      "expectedFrenchTexts": [
+        "Se connecter",
+        "Connectez-vous à votre compte",
+        "Se connecter avec Email",
+        "Se connecter avec Google"
+      ],
+      "foundEnglishTexts": [
+        "Sign In",
+        "Sign in to your account",
+        "Sign in with Email",
+        "Sign in with Google"
+      ]
+    },
+    {
+      "step": "4. 访问定价页面",
+      "status": "skip",
+      "message": "需要手动验证或使用浏览器自动化工具",
+      "url": "http://localhost:3000/fr/pricing",
+      "expectedFrenchTexts": [
+        "Tarifs",
+        "Commencer gratuitement",
+        "Mettre à niveau",
+        "Passer à Premium",
+        "Paiement à l'usage",
+        "Mensuel"
+      ],
+      "foundEnglishTexts": [
+        "Pricing",
+        "Get Started",
+        "Upgrade",
+        "Go Premium",
+        "Pay as you go",
+        "Monthly"
+      ]
+    },
+    {
+      "step": "5. 访问字幕提取页面",
+      "status": "skip",
+      "message": "需要手动验证或使用浏览器自动化工具",
+      "url": "http://localhost:3000/fr",
+      "expectedFrenchTexts": [
+        "Entrez le lien YouTube ou TikTok",
+        "Extraire les sous-titres",
+        "Télécharger",
+        "Langue native",
+        "Langue de traduction"
+      ],
+      "foundEnglishTexts": [
+        "Enter YouTube or TikTok Link",
+        "Extract Subtitles",
+        "Download",
+        "Native Language",
+        "Translation Language"
+      ]
+    },
+    {
+      "step": "6. 访问评论/反馈页面",
+      "status": "skip",
+      "message": "需要手动验证或使用浏览器自动化工具",
+      "url": "http://localhost:3000/fr/feedback",
+      "expectedFrenchTexts": [
+        "Commentaires",
+        "Soumettre",
+        "Message"
+      ],
+      "foundEnglishTexts": [
+        "Feedback",
+        "Submit",
+        "Message"
+      ]
+    },
+    {
+      "step": "7. 检查付款相关按钮",
+      "status": "skip",
+      "message": "需要手动验证或使用浏览器自动化工具",
+      "url": "http://localhost:3000/fr/pricing",
+      "expectedFrenchTexts": [
+        "Choisir le mode de paiement",
+        "Annuler",
+        "Continuer"
+      ],
+      "foundEnglishTexts": [
+        "Choose Payment Method",
+        "Cancel",
+        "Continue"
+      ]
+    }
+  ],
+  "summary": {
+    "frenchLocalization": {
+      "total": 7,
+      "passed": 0,
+      "failed": 0
+    },
+    "userJourney": {
+      "total": 7,
+      "passed": 0,
+      "failed": 0
+    }
+  }
+}

@@ -277,17 +277,22 @@ export async function POST(req: Request) {
 
       return respData(result.checkoutInfo);
     } catch (e: any) {
+      console.error('Payment creation error:', e);
       // update order status to completed, means checkout failed
       await updateOrderByOrderNo(orderNo, {
         status: OrderStatus.COMPLETED, // means checkout failed
         checkoutInfo: JSON.stringify(checkoutOrder),
+      }).catch((dbError) => {
+        console.error('Failed to update order status:', dbError);
       });
 
-      return respErr('checkout failed: ' + e.message);
+      const errorMessage = e?.message || 'Payment checkout failed. Please check your payment provider configuration.';
+      return respErr(errorMessage);
     }
   } catch (e: any) {
-    console.log('checkout failed:', e);
-    return respErr('checkout failed: ' + e.message);
+    console.error('Checkout API error:', e);
+    const errorMessage = e?.message || 'Checkout failed. Please try again later.';
+    return respErr(errorMessage);
   }
 }
 

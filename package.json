@@ -1,23 +1,23 @@
 {
-  "name": "shipany-template-two",
+  "name": "subtitle-tk",
   "version": "1.2.0",
   "private": true,
-  "author": "ShipAny.ai",
-  "homepage": "https://shipany.ai",
+  "author": "Subtitle TK",
+  "homepage": "https://subtitle-tk.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/shipanyai/shipany-template-two"
+    "url": "https://github.com/JPierreXiong/shipany_subtitle_youtube_TK-"
   },
   "keywords": [
-    "shipany",
-    "shipany-template-two",
+    "subtitle-tk",
+    "subtitle-youtube-tiktok",
     "ai-saas-boilerplate",
     "ai-saas-template",
     "ai-saas-framework",
     "ai-saas-development"
   ],
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "build:fast": "NODE_OPTIONS='--max-old-space-size=4096' next build",
     "start": "next start",
@@ -31,6 +31,8 @@
     "auth:generate": "npx @better-auth/cli generate --config=src/core/auth/index.ts",
     "rbac:init": "npx tsx scripts/init-rbac.ts",
     "rbac:assign": "npx tsx scripts/assign-role.ts",
+    "test:french": "npx tsx scripts/test-french-user-journey.ts",
+    "test:french:headless": "TEST_HEADLESS=true npx tsx scripts/test-french-user-journey.ts",
     "postinstall": "fumadocs-mdx",
     "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",

@@ -1,8 +1,8 @@
-{
+﻿{
   "metadata": {
-    "title": "ShipAny 模板二",
-    "description": "ShipAny 是用于构建 AI SaaS 创业项目的 NextJS 脚手架。提供丰富模板和组件，助您快速上线产品。",
-    "keywords": "shipany, shipany-boilerplate, shipany-template-two-demo"
+    "title": "Subtitle TK 模板二",
+    "description": "Subtitle TK - 从 YouTube 和 TikTok 提取字幕，翻译成 12 种语言，并下载视频。",
+    "keywords": "Subtitle TK, Subtitle TK-boilerplate, Subtitle TK-template-two-demo"
   },
   "sign": {
     "sign_in_title": "登录",
