@@ -3,11 +3,20 @@ import { createAuthClient } from '@neondatabase/neon-js/auth';
 
 import { envConfigs } from '@/config';
 
-// Server-side Neon Auth client
-// Note: createAuthClient from @neondatabase/neon-js/auth works on both client and server
-const neonAuthUrl = envConfigs.neon_auth_url || process.env.NEXT_PUBLIC_NEON_AUTH_URL || '';
-
-export const serverAuthClient = neonAuthUrl ? createAuthClient(neonAuthUrl) : null;
+// Server-side Neon Auth client factory
+// Note: createAuthClient reads URL from NEXT_PUBLIC_NEON_AUTH_URL env var automatically
+function getServerAuthClient() {
+  const neonAuthUrl = envConfigs.neon_auth_url || process.env.NEXT_PUBLIC_NEON_AUTH_URL || '';
+  
+  if (!neonAuthUrl) {
+    console.error('NEXT_PUBLIC_NEON_AUTH_URL is not set');
+    return null;
+  }
+  
+  // createAuthClient() reads from environment variables automatically
+  // The URL should be available via NEXT_PUBLIC_NEON_AUTH_URL
+  return createAuthClient();
+}
 
 /**
  * Get session from Neon Auth (server-side)
@@ -25,13 +34,13 @@ export async function getNeonSession(request?: {
     }
 
     if (request) {
-      // For middleware - create a client with request headers via fetchOptions
+      // For middleware - create a client and pass headers via fetchOptions
       const headersObj = request.headers instanceof Headers 
         ? Object.fromEntries(request.headers.entries())
         : request.headers;
       
-      // Create a temporary client for this request
-      const tempClient = createAuthClient(neonAuthUrl);
+      // Create a client (reads URL from env automatically)
+      const tempClient = createAuthClient();
       
       // Use fetchOptions to pass headers
       const session = await tempClient.getSession({
@@ -41,14 +50,15 @@ export async function getNeonSession(request?: {
       });
       return session;
     } else {
-      // For API routes - use default client which reads from cookies automatically
-      if (!serverAuthClient) {
-        console.error('Neon Auth client not initialized');
+      // For API routes - create client and get session
+      const client = getServerAuthClient();
+      if (!client) {
+        console.error('Neon Auth client not initialized - check NEXT_PUBLIC_NEON_AUTH_URL');
         return null;
       }
       
       // getSession() automatically reads from cookies in server environment
-      const session = await serverAuthClient.getSession();
+      const session = await client.getSession();
       return session;
     }
   } catch (error) {

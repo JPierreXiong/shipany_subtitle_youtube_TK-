@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { serverAuthClient } from '@/core/auth/neon-server';
 
 /**
  * Neon Auth API proxy route
