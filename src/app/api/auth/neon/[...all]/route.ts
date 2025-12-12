@@ -4,6 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
  * Neon Auth API proxy route
  * This handles authentication requests and proxies them to Neon Auth
  */
+
+// Force dynamic rendering - this route uses headers.entries() which is dynamic
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const neonAuthUrl = process.env.NEXT_PUBLIC_NEON_AUTH_URL;

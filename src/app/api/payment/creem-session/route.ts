@@ -9,6 +9,9 @@ import { task } from '@/config/db/schema';
 import { getUuid } from '@/shared/lib/hash';
 import { respData, respErr } from '@/shared/lib/resp';
 
+// Force dynamic rendering - this route uses headers.get() which is dynamic
+export const dynamic = 'force-dynamic';
+
 type ServiceType = 'EXTRACT_SUBTITLE' | 'DOWNLOAD_VIDEO';
 
 function getUserIdFromRequest(req: NextRequest): string | null {
