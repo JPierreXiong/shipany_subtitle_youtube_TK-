@@ -1,22 +1,19 @@
 // Load .env files for scripts (tsx/ts-node) - but NOT in Edge Runtime or browser
 // This ensures scripts can read DATABASE_URL and other env vars
-// Check for real Node.js environment - avoid Edge Runtime
-if (
-  typeof process !== 'undefined' &&
-  process.env.NEXT_RUNTIME !== 'edge' && // Skip in Edge Runtime
-  !process.env.NEXT_RUNTIME // Skip if already in Next.js runtime (env vars already loaded)
-) {
+// Check for real Node.js environment - avoid Edge Runtime completely
+const isEdgeRuntime = typeof process !== 'undefined' && process.env.NEXT_RUNTIME === 'edge';
+const isNextRuntime = typeof process !== 'undefined' && process.env.NEXT_RUNTIME;
+
+if (!isEdgeRuntime && !isNextRuntime && typeof process !== 'undefined') {
   try {
-    // Only load dotenv in Node.js environment (not Edge Runtime)
-    // Check for Node.js-specific APIs without calling them
-    if (typeof require !== 'undefined' && typeof process.cwd !== 'undefined') {
+    // Only load dotenv in Node.js environment (not Edge Runtime or browser)
+    // Use dynamic import to avoid bundling dotenv in Edge Runtime
+    if (typeof require !== 'undefined') {
       const dotenv = require('dotenv');
-      // Use process.cwd() only if we're sure we're in Node.js
-      const cwd = typeof process.cwd === 'function' ? process.cwd() : undefined;
-      if (cwd) {
-        dotenv.config({ path: '.env.development' });
-        dotenv.config({ path: '.env', override: false });
-      }
+      // dotenv.config uses process.cwd() internally, but only in Node.js context
+      // This code path is skipped in Edge Runtime due to the check above
+      dotenv.config({ path: '.env.development' });
+      dotenv.config({ path: '.env', override: false });
     }
   } catch (e) {
     // Silently fail - dotenv might not be available in some environments
