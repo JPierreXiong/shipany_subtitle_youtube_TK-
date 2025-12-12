@@ -28,19 +28,12 @@ const nextConfig = {
   async redirects() {
     return [];
   },
-  turbopack: {
-    resolveAlias: {
-      // fs: {
-      //   browser: './empty.ts', // We recommend to fix code imports before using this method
-      // },
-    },
-  },
   experimental: {
-    turbopackFileSystemCacheForDev: true,
     // Disable mdxRs for Vercel deployment compatibility with fumadocs-mdx
     ...(process.env.VERCEL ? {} : { mdxRs: true }),
+    // React Compiler support
+    reactCompiler: true,
   },
-  reactCompiler: true,
 };
 
 export default withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
