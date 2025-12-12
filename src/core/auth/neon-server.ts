@@ -4,7 +4,6 @@ import { createAuthClient } from '@neondatabase/neon-js/auth';
 import { envConfigs } from '@/config';
 
 // Server-side Neon Auth client factory
-// Note: createAuthClient reads URL from NEXT_PUBLIC_NEON_AUTH_URL env var automatically
 function getServerAuthClient() {
   const neonAuthUrl = envConfigs.neon_auth_url || process.env.NEXT_PUBLIC_NEON_AUTH_URL || '';
   
@@ -13,9 +12,8 @@ function getServerAuthClient() {
     return null;
   }
   
-  // createAuthClient() reads from environment variables automatically
-  // The URL should be available via NEXT_PUBLIC_NEON_AUTH_URL
-  return createAuthClient();
+  // createAuthClient requires the URL as parameter
+  return createAuthClient(neonAuthUrl);
 }
 
 /**
@@ -39,8 +37,8 @@ export async function getNeonSession(request?: {
         ? Object.fromEntries(request.headers.entries())
         : request.headers;
       
-      // Create a client (reads URL from env automatically)
-      const tempClient = createAuthClient();
+      // Create a client with URL
+      const tempClient = createAuthClient(neonAuthUrl);
       
       // Use fetchOptions to pass headers
       const session = await tempClient.getSession({

@@ -31,8 +31,6 @@ const nextConfig = {
   experimental: {
     // Disable mdxRs for Vercel deployment compatibility with fumadocs-mdx
     ...(process.env.VERCEL ? {} : { mdxRs: true }),
-    // React Compiler support
-    reactCompiler: true,
   },
 };
 
