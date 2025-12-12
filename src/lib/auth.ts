@@ -18,12 +18,21 @@ export const signIn = authClient.signIn;
 export const signUp = authClient.signUp;
 export const signOut = authClient.signOut;
 
+// Type definition for authData with flexible structure
+// This allows us to safely access session data from different possible structures
+type AuthDataWithSession = {
+  data?: { data?: any } | any;
+  session?: any;
+  isLoading?: boolean;
+  error?: any;
+};
+
 // Use useAuthData hook which provides session data
 // useAuthData expects { queryFn, cacheKey, staleTime } parameters
 // We use queryFn to fetch session data from authClient
 export function useSession() {
   // Use queryFn approach: this is what TypeScript expects
-  const authData = useAuthData({
+  const authDataRaw = useAuthData({
     queryFn: async () => {
       try {
         // Get session from authClient
@@ -43,19 +52,34 @@ export function useSession() {
   });
   
   // Handle different return formats from useAuthData
-  if (!authData) {
+  if (!authDataRaw) {
     return {
       data: null,
       isLoading: true,
     };
   }
   
-  // authData structure: { data: { data: session }, error, isLoading }
-  // Extract session from nested data structure
+  // 1. Type assertion: allow TypeScript to access all possible properties
+  const authData = authDataRaw as AuthDataWithSession;
+  
+  // 2. Precise destructuring: extract session from nested data structure
+  // Handle different possible structures:
+  // - authData.data?.data (nested structure from queryFn)
+  // - authData.data (direct data)
+  // - authData.session (direct session property)
   const session = authData.data?.data || authData.data || authData.session;
   
+  // 3. Check if we have valid session data
+  if (!session) {
+    return {
+      data: null,
+      isLoading: authData.isLoading ?? false,
+    };
+  }
+  
+  // 4. Return standardized session structure
   return {
-    data: session ? { session } : null,
+    data: { session },
     isLoading: authData.isLoading ?? false,
   };
 }
