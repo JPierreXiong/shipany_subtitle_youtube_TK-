@@ -7,11 +7,20 @@ import { serverAuthClient } from '@/core/auth/neon-server';
  */
 export async function POST(request: NextRequest) {
   try {
+    const neonAuthUrl = process.env.NEXT_PUBLIC_NEON_AUTH_URL;
+    
+    if (!neonAuthUrl) {
+      return NextResponse.json(
+        { error: 'Neon Auth URL is not configured' },
+        { status: 500 }
+      );
+    }
+
     // Get the pathname from the catch-all route
     const pathname = request.nextUrl.pathname.replace('/api/auth/neon', '');
     
     // Forward the request to Neon Auth
-    const response = await fetch(`${process.env.NEXT_PUBLIC_NEON_AUTH_URL}${pathname}`, {
+    const response = await fetch(`${neonAuthUrl}${pathname}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -20,7 +29,16 @@ export async function POST(request: NextRequest) {
       body: await request.text(),
     });
 
-    const data = await response.json();
+    // Handle non-JSON responses
+    const contentType = response.headers.get('content-type');
+    let data: any;
+    
+    if (contentType?.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      data = { error: text || 'Unexpected response format' };
+    }
     
     return NextResponse.json(data, {
       status: response.status,
@@ -39,16 +57,34 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const neonAuthUrl = process.env.NEXT_PUBLIC_NEON_AUTH_URL;
+    
+    if (!neonAuthUrl) {
+      return NextResponse.json(
+        { error: 'Neon Auth URL is not configured' },
+        { status: 500 }
+      );
+    }
+
     const pathname = request.nextUrl.pathname.replace('/api/auth/neon', '');
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_NEON_AUTH_URL}${pathname}${request.nextUrl.search}`, {
+    const response = await fetch(`${neonAuthUrl}${pathname}${request.nextUrl.search}`, {
       method: 'GET',
       headers: {
         ...Object.fromEntries(request.headers.entries()),
       },
     });
 
-    const data = await response.json();
+    // Handle non-JSON responses
+    const contentType = response.headers.get('content-type');
+    let data: any;
+    
+    if (contentType?.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      data = { error: text || 'Unexpected response format' };
+    }
     
     return NextResponse.json(data, {
       status: response.status,
