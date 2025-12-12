@@ -1,7 +1,7 @@
 'use client';
 
 import { createAuthClient } from '@neondatabase/neon-js/auth';
-import { useSession as useNeonSession } from '@neondatabase/neon-js/auth/react';
+import { useAuthData } from '@neondatabase/neon-js/auth/react';
 
 import { envConfigs } from '@/config';
 
@@ -17,5 +17,13 @@ export const authClient = createAuthClient(neonAuthUrl);
 export const signIn = authClient.signIn;
 export const signUp = authClient.signUp;
 export const signOut = authClient.signOut;
-export const useSession = useNeonSession;
+
+// Use useAuthData hook which provides session data
+export function useSession() {
+  const authData = useAuthData();
+  return {
+    data: authData?.session ? { session: authData.session } : null,
+    isLoading: authData?.isLoading ?? false,
+  };
+}
 

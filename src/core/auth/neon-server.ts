@@ -1,12 +1,13 @@
 import { cookies, headers } from 'next/headers';
-import { createAuthClient } from '@neondatabase/neon-js/auth/next';
+import { createAuthClient } from '@neondatabase/neon-js/auth';
 
 import { envConfigs } from '@/config';
 
 // Server-side Neon Auth client
+// Note: createAuthClient from @neondatabase/neon-js/auth works on both client and server
 const neonAuthUrl = envConfigs.neon_auth_url || process.env.NEXT_PUBLIC_NEON_AUTH_URL || '';
 
-export const serverAuthClient = createAuthClient(neonAuthUrl);
+export const serverAuthClient = neonAuthUrl ? createAuthClient(neonAuthUrl) : null;
 
 /**
  * Get session from Neon Auth (server-side)
@@ -16,6 +17,11 @@ export async function getNeonSession(request?: {
   headers: Headers | Record<string, string>;
 }) {
   try {
+    if (!serverAuthClient) {
+      console.error('Neon Auth client not initialized - check NEXT_PUBLIC_NEON_AUTH_URL');
+      return null;
+    }
+
     if (request) {
       // For middleware - use request headers directly
       const headersObj = request.headers instanceof Headers 
