@@ -4,7 +4,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { ChevronsUpDown, Loader2, LogOut, User } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { signOut, useSession } from '@/core/auth/client';
+import { signOut, useSession } from '@/lib/auth';
 import { Link, useRouter } from '@/core/i18n/navigation';
 import { SmartIcon } from '@/shared/blocks/common';
 import { SignModal } from '@/shared/blocks/sign/sign-modal';
@@ -36,7 +36,9 @@ import { SidebarUser as SidebarUserType } from '@/shared/types/blocks/dashboard'
 // SSR/CSR hydration bug fix: Avoid rendering session-dependent UI until mounted on client
 export function SidebarUser({ user }: { user: SidebarUserType }) {
   const t = useTranslations('common.sign');
-  const { data: session, isPending } = useSession();
+  const sessionResult = useSession();
+  const session = sessionResult?.data?.session;
+  const isPending = sessionResult?.isLoading ?? false;
   const { isMobile, open } = useSidebar();
   const router = useRouter();
 

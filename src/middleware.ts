@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSessionCookie } from 'better-auth/cookies';
 
 import { routing } from './core/i18n/config';
+import { getNeonSession } from './core/auth/neon-server';
 
 // 定义需要登录检查的路径前缀 (不带 locale)
 const PROTECTED_PATHS = ['/admin', '/settings', '/activity'];
 
-export default function middleware(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const { locales, defaultLocale } = routing;
 
@@ -34,12 +34,26 @@ export default function middleware(request: NextRequest) {
   );
 
   if (isProtectedPath) {
-    const session = getSessionCookie(request);
-
-    if (!session) {
-      // 重定向到 /locale/sign-in
+    // Check Neon Auth session using request headers
+    try {
+      const session = await getNeonSession({
+        headers: request.headers,
+      });
+      
+      // Check if session exists and has user data
+      const hasUser = session && (session as any).user;
+      
+      if (!hasUser) {
+        // 重定向到 /locale/sign-in
+        const signInUrl = new URL(`/${locale}/sign-in`, request.url);
+        // 可选：设置 callbackUrl
+        signInUrl.searchParams.set('callbackUrl', pathWithoutLocale + request.nextUrl.search);
+        return NextResponse.redirect(signInUrl, 307);
+      }
+    } catch (error) {
+      // If session check fails, redirect to sign-in
+      console.error('Session check failed:', error);
       const signInUrl = new URL(`/${locale}/sign-in`, request.url);
-      // 可选：设置 callbackUrl
       signInUrl.searchParams.set('callbackUrl', pathWithoutLocale + request.nextUrl.search);
       return NextResponse.redirect(signInUrl, 307);
     }

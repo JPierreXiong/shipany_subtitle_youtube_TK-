@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-import { signUp } from '@/core/auth/client';
+import { signUp } from '@/lib/auth';
 import { Link } from '@/core/i18n/navigation';
 import { defaultLocale } from '@/config/locale';
 import { Button } from '@/shared/components/ui/button';
@@ -111,13 +111,13 @@ export function SignUp({
         name: name.trim(),
       },
       {
-        onRequest: (ctx) => {
+        onRequest: (_ctx: any) => {
           setLoading(true);
         },
-        onResponse: (ctx) => {
+        onResponse: (_ctx: any) => {
           setLoading(false);
         },
-        onSuccess: async (ctx) => {
+        onSuccess: async (_ctx: any) => {
           // report affiliate
           reportAffiliate({ userEmail: email });
           

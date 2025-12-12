@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import { count, desc, eq, inArray } from 'drizzle-orm';
 
-import { getAuth } from '@/core/auth';
+import { getNeonUser } from '@/core/auth/neon-server';
 import { db } from '@/core/db';
 import { user } from '@/config/db/schema';
 
@@ -103,12 +103,21 @@ export async function getUserCredits(userId: string) {
 }
 
 export async function getSignUser() {
-  const auth = await getAuth();
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  // Use Neon Auth to get current user
+  const neonUser = await getNeonUser();
+  
+  if (!neonUser) {
+    return null;
+  }
 
-  return session?.user;
+  // Get user from database by email (Neon Auth uses email as identifier)
+  const dbUser = await db()
+    .select()
+    .from(user)
+    .where(eq(user.email, neonUser.email || ''))
+    .limit(1);
+
+  return dbUser[0] || null;
 }
 
 export async function appendUserToResult(result: any) {

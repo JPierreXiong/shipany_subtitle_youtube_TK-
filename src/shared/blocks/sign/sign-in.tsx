@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-import { signIn } from '@/core/auth/client';
+import { signIn } from '@/lib/auth';
 import { Link, useRouter } from '@/core/i18n/navigation';
 import { defaultLocale } from '@/config/locale';
 import { Button } from '@/shared/components/ui/button';
@@ -70,13 +70,13 @@ export function SignIn({
         callbackURL: callbackUrl,
       },
       {
-        onRequest: (ctx) => {
+        onRequest: (_ctx: any) => {
           setLoading(true);
         },
-        onResponse: (ctx) => {
+        onResponse: (_ctx: any) => {
           setLoading(false);
         },
-        onSuccess: (ctx) => {},
+        onSuccess: (_ctx: any) => {},
         onError: (e: any) => {
           toast.error(e?.error?.message || 'sign in failed');
           setLoading(false);

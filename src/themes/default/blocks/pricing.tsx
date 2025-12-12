@@ -203,10 +203,10 @@ export function Pricing({
 
   // Creem product IDs and their payment URLs (using payment_product_id, not product_id)
   const CREEM_PRODUCTS: Record<string, string> = {
-    'prod_7c1FZHQeCCFczvNU5dYWEj': 'https://www.creem.io/test/payment/prod_7c1FZHQeCCFczvNU5dYWEj',
-    'prod_1pM4Co56OhCMC7EkwMjVf': 'https://www.creem.io/test/payment/prod_1pM4Co56OhCMC7EkwMjVf',
-    'prod_55OLI8OQq1I048Jn8IPYuN': 'https://www.creem.io/test/payment/prod_55OLI8OQq1I048Jn8IPYuN',
-    'prod_67wmwvV2gVSBnblWES0uuN': 'https://www.creem.io/test/payment/prod_67wmwvV2gVSBnblWES0uuN',
+    'prod_52so9q1usRp5ZfDZ0vIBru': 'https://www.creem.io/payment/prod_52so9q1usRp5ZfDZ0vIBru', // 19.9 USD
+    'prod_6Wo2c7ZLGrOcz1jGrSqhi0': 'https://www.creem.io/payment/prod_6Wo2c7ZLGrOcz1jGrSqhi0', // 59.9 USD
+    'prod_2tOrusjFjkm0WaOn9waSCP': 'https://www.creem.io/payment/prod_2tOrusjFjkm0WaOn9waSCP', // 199 USD
+    'prod_63bqw8TJIyeUZRZf4TdUAc': 'https://www.creem.io/payment/prod_63bqw8TJIyeUZRZf4TdUAc', // 599 USD
   };
 
   const handlePayment = async (item: PricingItem) => {

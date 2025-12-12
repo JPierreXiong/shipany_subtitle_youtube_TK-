@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { getAuthClient, useSession } from '@/core/auth/client';
+import { useSession } from '@/lib/auth';
 import { useRouter } from '@/core/i18n/navigation';
 import { envConfigs } from '@/config';
 import { User } from '@/shared/models/user';
@@ -36,11 +36,14 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   // sign user
   const [user, setUser] = useState<User | null>(null);
 
-  // session
-  const { data: session, isPending } = useSession();
+  // session - Neon Auth returns { data: { session: { user } }, isLoading }
+  const sessionResult = useSession();
+  const session = sessionResult?.data?.session;
+  const isPending = sessionResult?.isLoading ?? false;
 
   // is check sign (true during SSR and initial render to avoid hydration mismatch when auth is enabled)
-  const [isCheckSign, setIsCheckSign] = useState(!!envConfigs.auth_secret);
+  // Note: Using neon_auth_url instead of auth_secret for Neon Auth
+  const [isCheckSign, setIsCheckSign] = useState(!!envConfigs.neon_auth_url);
 
   // show sign modal
   const [isShowSignModal, setIsShowSignModal] = useState(false);
@@ -109,27 +112,12 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Note: One Tap functionality is not available in Neon Auth
+  // If needed, implement using Neon Auth's OAuth providers
   const showOneTap = async function (configs: Record<string, string>) {
-    try {
-      const authClient = getAuthClient(configs);
-      await authClient.oneTap({
-        callbackURL: '/',
-        onPromptNotification: (notification: any) => {
-          // Handle prompt dismissal silently
-          // This callback is triggered when the prompt is dismissed or skipped
-          console.log('One Tap prompt notification:', notification);
-        },
-        // fetchOptions: {
-        //   onSuccess: () => {
-        //     router.push('/');
-        //   },
-        // },
-      });
-    } catch (error) {
-      // Silently handle One Tap cancellation errors
-      // These errors occur when users close the prompt or decline to sign in
-      // Common errors: FedCM NetworkError, AbortError, etc.
-    }
+    // TODO: Implement OAuth sign-in if needed
+    // Neon Auth supports OAuth providers but not Google One Tap
+    console.log('One Tap not available with Neon Auth');
   };
 
   useEffect(() => {
@@ -137,7 +125,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (session && session.user) {
+    // Neon Auth returns session.user directly in session object
+    if (session?.user) {
       setUser(session.user as User);
       fetchUserInfo();
     } else {
